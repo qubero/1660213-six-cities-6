@@ -3,6 +3,8 @@ import Header from '../../header/header';
 import OffersList from '../../offers-list/offers-list';
 import PropTypes from 'prop-types';
 import {offerCardPropTypes} from '../../../prop-types.prop';
+import Map from '../../map/map';
+import {cityLocations, offerLocations} from '../../../mocks/offers';
 
 const MainScreen = (props) => {
   const {offers} = props;
@@ -71,7 +73,7 @@ const MainScreen = (props) => {
               <OffersList offers={offers} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map city={cityLocations.amsterdam} offers={offerLocations} isMainScreen />
             </div>
           </div>
         </div>
