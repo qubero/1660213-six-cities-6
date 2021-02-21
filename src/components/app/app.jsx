@@ -1,32 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
-import MainScreen from '../main-screen/main-screen';
-import AuthScreen from '../auth-screen/auth-screen';
-import RoomScreen from '../room-screen/room-screen';
-import FavoritesScreen from '../favorites-screen/favorites-screen';
-import NotFoundScreen from '../not-found-screen/not-found-screen';
+import MainScreen from '../screens/main-screen/main-screen';
+import AuthScreen from '../screens/auth-screen/auth-screen';
+import RoomScreen from '../screens/room-screen/room-screen';
+import FavoritesScreen from '../screens/favorites-screen/favorites-screen';
+import NotFoundScreen from '../screens/not-found-screen/not-found-screen';
+import {offerCardPropTypes} from '../../prop-types.prop';
 
 const App = (props) => {
-  const {placesCount} = props;
+  const {offers} = props;
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <MainScreen placesCount={placesCount} />
+          <MainScreen offers={offers} />
         </Route>
         <Route exact path="/favorites">
-          <FavoritesScreen/>
+          <FavoritesScreen offers={favoriteOffers} />
         </Route>
         <Route exact path="/login">
-          <AuthScreen/>
+          <AuthScreen />
         </Route>
         <Route exact path="/offer/:id">
-          <RoomScreen/>
+          <RoomScreen />
         </Route>
         <Route>
-          <NotFoundScreen/>
+          <NotFoundScreen />
         </Route>
       </Switch>
     </BrowserRouter>
@@ -34,7 +36,11 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  placesCount: PropTypes.number.isRequired
+  offers: PropTypes.arrayOf(
+      PropTypes.shape(
+          offerCardPropTypes,
+      ),
+  ).isRequired
 };
 
 export default App;
