@@ -3,8 +3,7 @@ import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import FavoritesList from '../../favorites-list/favorites-list';
 import FavoritesEmpty from '../../favorites-empty/favorites-empty';
-import PropTypes from 'prop-types';
-import {offerCardPropTypes} from '../../../prop-types.prop';
+import {offersListPropTypes} from '../../../prop-types.prop';
 
 const FavoritesScreen = ({offers}) => {
   return (
@@ -23,12 +22,6 @@ const FavoritesScreen = ({offers}) => {
   );
 };
 
-FavoritesScreen.propTypes = {
-  offers: PropTypes.arrayOf(
-      PropTypes.shape(
-          offerCardPropTypes,
-      ),
-  ).isRequired
-};
+FavoritesScreen.propTypes = offersListPropTypes;
 
 export default FavoritesScreen;

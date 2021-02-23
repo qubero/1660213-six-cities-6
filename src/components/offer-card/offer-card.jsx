@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {OfferCardType} from '../../const';
 import PropTypes from 'prop-types';
 import {offerCardPropTypes} from '../../prop-types.prop';
+import {getRatingPercentage} from '../../utils/utils';
 
 const noop = () => { };
 
@@ -20,8 +21,29 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop}) => {
 
   const offerLink = `/offer/${id}`;
 
-  const offerImage = (cardType) => {
+  const getArticleClassByType = (cardType) => {
     switch (cardType) {
+      case OfferCardType.ROOM:
+        return `near-places__card`;
+      case OfferCardType.CITIES:
+        return `cities__place-card`;
+      case OfferCardType.FAVORITES:
+        return `favorites__card`;
+      default:
+        return ``;
+    }
+  };
+
+  const getOfferImageByType = (cardType) => {
+    switch (cardType) {
+      case OfferCardType.ROOM:
+        return (
+          <div className="near-places__image-wrapper place-card__image-wrapper">
+            <Link to={offerLink}>
+              <img className="place-card__image" src={image} width="260" height="200" alt="Place image" />
+            </Link>
+          </div>
+        );
       case OfferCardType.CITIES:
         return (
           <div className="cities__image-wrapper place-card__image-wrapper">
@@ -47,14 +69,14 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop}) => {
     <article
       onFocus={() => onOfferHover(id)}
       onMouseEnter={() => onOfferHover(id)}
-      className={`place-card ${offerCardType === OfferCardType.FAVORITES ? `favorites__card` : `cities__place-card`}`}
+      className={`place-card ${getArticleClassByType(offerCardType)}`}
     >
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       }
-      {offerImage(offerCardType)}
+      {getOfferImageByType(offerCardType)}
       <div className={`place-card__info ${offerCardType === OfferCardType.FAVORITES ? `favorites__card-info` : ``}`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
@@ -70,7 +92,7 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop}) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${Math.round(rating) * 20}%`}}></span>
+            <span style={{width: getRatingPercentage(rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

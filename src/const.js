@@ -1,4 +1,5 @@
 export const OfferCardType = {
   CITIES: `cities`,
-  FAVORITES: `favorites`
+  FAVORITES: `favorites`,
+  ROOM: `room`
 };

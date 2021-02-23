@@ -1,10 +1,10 @@
 import React from 'react';
 import Header from '../../header/header';
-import OffersList from '../../offers-list/offers-list';
-import PropTypes from 'prop-types';
-import {offerCardPropTypes} from '../../../prop-types.prop';
 import Map from '../../map/map';
-import {cityLocations, offerLocations} from '../../../mocks/offers';
+import OffersListProxy from '../../offers-list-proxy/offers-list-proxy';
+import {offerCards} from '../../../mocks/offers';
+import {offersListPropTypes} from '../../../prop-types.prop';
+import {OfferCardType} from '../../../const';
 
 const MainScreen = (props) => {
   const {offers} = props;
@@ -70,10 +70,10 @@ const MainScreen = (props) => {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <OffersList offers={offers} />
+              <OffersListProxy offers={offers} offerCardType={OfferCardType.CITIES} className={`cities__places-list  tabs__content`} />
             </section>
             <div className="cities__right-section">
-              <Map city={cityLocations.amsterdam} offers={offerLocations} isMainScreen />
+              <Map city={offerCards[0].city} offers={offerCards} isMainScreen />
             </div>
           </div>
         </div>
@@ -82,12 +82,6 @@ const MainScreen = (props) => {
   );
 };
 
-MainScreen.propTypes = {
-  offers: PropTypes.arrayOf(
-      PropTypes.shape(
-          offerCardPropTypes,
-      ),
-  )
-};
+MainScreen.propTypes = offersListPropTypes;
 
 export default MainScreen;
