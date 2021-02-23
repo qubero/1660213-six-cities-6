@@ -69,11 +69,11 @@ export const offerCards = [
     isPremium: true,
     image: `img/apartment-02.jpg`,
     galleryList: [
+      `img/room.jpg`,
+      `img/studio-01.jpg`,
       `img/apartment-01.jpg`,
       `img/apartment-02.jpg`,
       `img/apartment-03.jpg`,
-      `img/room.jpg`,
-      `img/studio-01.jpg`,
       `img/studio-photos.jpg`
     ],
     bedrooms: 2,
