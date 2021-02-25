@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
-import PropTypes from 'prop-types';
+import {mapPropTypes} from '../../prop-types.prop';
 
 import "leaflet/dist/leaflet.css";
 
@@ -58,10 +58,6 @@ const Map = ({city, offers, isMainScreen = false}) => {
   );
 };
 
-Map.propTypes = {
-  city: PropTypes.object.isRequired,
-  offers: PropTypes.array.isRequired,
-  isMainScreen: PropTypes.bool
-};
+Map.propTypes = mapPropTypes;
 
 export default Map;

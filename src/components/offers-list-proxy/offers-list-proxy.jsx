@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import OffersList from '../offers-list/offers-list';
+import {offersListProxyPropTypes} from '../../prop-types.prop';
 
 const OffersListProxy = ({className = ``, ...props}) => {
   return (
@@ -10,8 +10,6 @@ const OffersListProxy = ({className = ``, ...props}) => {
   );
 };
 
-OffersListProxy.propTypes = {
-  className: PropTypes.string.isRequired
-};
+OffersListProxy.propTypes = offersListProxyPropTypes;
 
 export default OffersListProxy;

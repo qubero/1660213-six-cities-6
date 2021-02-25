@@ -15,6 +15,15 @@ export const reviewCardPropTypes = {
   user: PropTypes.shape(userCardPropTypes)
 };
 
+const cityPropTypes = {
+  location: PropTypes.shape({
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
+    zoom: PropTypes.number.isRequired
+  }),
+  name: PropTypes.string.isRequired
+};
+
 export const offerCardPropTypes = {
   id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
@@ -33,14 +42,7 @@ export const offerCardPropTypes = {
   services: PropTypes.arrayOf(
       PropTypes.string.isRequired,
   ).isRequired,
-  city: PropTypes.shape({
-    location: PropTypes.shape({
-      latitude: PropTypes.number.isRequired,
-      longitude: PropTypes.number.isRequired,
-      zoom: PropTypes.number.isRequired
-    }),
-    name: PropTypes.string.isRequired
-  }),
+  city: PropTypes.shape(cityPropTypes),
   location: PropTypes.shape({
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
@@ -59,4 +61,17 @@ export const offersListWithTypePropTypes = Object.assign(
     {},
     offersListPropTypes,
     {offerCardType: PropTypes.string.isRequired}
+);
+
+export const offersListProxyPropTypes = Object.assign(
+    {},
+    offersListWithTypePropTypes,
+    {className: PropTypes.string.isRequired}
+);
+
+export const mapPropTypes = Object.assign(
+    {},
+    offersListPropTypes,
+    {city: PropTypes.shape(cityPropTypes).isRequired},
+    {isMainScreen: PropTypes.bool}
 );
