@@ -2,12 +2,11 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import OfferCard from '../offer-card/offer-card';
 import {OfferCardType} from '../../const';
-import {groupByKey} from '../../utils.js/utils';
-import PropTypes from 'prop-types';
-import {offerCardPropTypes} from '../../prop-types.prop';
+import {groupByKey} from '../../utils/utils';
+import {offersListPropTypes} from '../../prop-types.prop';
 
 const FavoritesList = ({offers}) => {
-  const offersByCity = groupByKey(offers, `city`);
+  const offersByCity = groupByKey(offers, `city.name`);
 
   return (
     <section className="favorites">
@@ -34,12 +33,6 @@ const FavoritesList = ({offers}) => {
   );
 };
 
-FavoritesList.propTypes = {
-  offers: PropTypes.arrayOf(
-      PropTypes.shape(
-          offerCardPropTypes,
-      ),
-  ).isRequired
-};
+FavoritesList.propTypes = offersListPropTypes;
 
 export default FavoritesList;

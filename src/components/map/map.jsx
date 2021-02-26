@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
-import PropTypes from 'prop-types';
+import {mapPropTypes} from '../../prop-types.prop';
 
 import "leaflet/dist/leaflet.css";
 
@@ -11,15 +11,18 @@ const Map = ({city, offers, isMainScreen = false}) => {
     iconSize: [27, 39]
   });
 
+  const {location} = city;
+
   useEffect(() => {
-    const zoom = 12;
     const map = leaflet.map(mapRef.current, {
-      center: city,
-      zoom,
+      center: {
+        lat: location.latitude,
+        lng: location.longitude
+      },
+      zoom: location.zoom,
       zoomControl: true,
       marker: true
     });
-    map.setView(city, zoom);
 
     leaflet
       .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
@@ -29,7 +32,10 @@ const Map = ({city, offers, isMainScreen = false}) => {
 
     offers.forEach((offer) => {
       leaflet
-        .marker(offer, {icon})
+        .marker({
+          lat: offer.location.latitude,
+          lng: offer.location.longitude
+        }, {icon})
         .addTo(map);
     });
 
@@ -41,7 +47,7 @@ const Map = ({city, offers, isMainScreen = false}) => {
 
   return (
     <section
-      className="cities__map map"
+      className={`map ${isMainScreen ? `cities__map` : `property__map`}`}
       style={
         isMainScreen
           ? {height: `auto`}
@@ -52,10 +58,6 @@ const Map = ({city, offers, isMainScreen = false}) => {
   );
 };
 
-Map.propTypes = {
-  city: PropTypes.array.isRequired,
-  offers: PropTypes.array.isRequired,
-  isMainScreen: PropTypes.bool
-};
+Map.propTypes = mapPropTypes;
 
 export default Map;

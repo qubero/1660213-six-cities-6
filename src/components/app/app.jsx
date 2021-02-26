@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 import MainScreen from '../screens/main-screen/main-screen';
 import AuthScreen from '../screens/auth-screen/auth-screen';
 import RoomScreen from '../screens/room-screen/room-screen';
 import FavoritesScreen from '../screens/favorites-screen/favorites-screen';
 import NotFoundScreen from '../screens/not-found-screen/not-found-screen';
-import {offerCardPropTypes} from '../../prop-types.prop';
+import {offersListPropTypes} from '../../prop-types.prop';
 
 const App = (props) => {
   const {offers} = props;
@@ -35,12 +34,6 @@ const App = (props) => {
   );
 };
 
-App.propTypes = {
-  offers: PropTypes.arrayOf(
-      PropTypes.shape(
-          offerCardPropTypes,
-      ),
-  ).isRequired
-};
+App.propTypes = offersListPropTypes;
 
 export default App;
