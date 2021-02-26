@@ -1,3 +1,12 @@
+export const CityNames = {
+  PARIS: `Paris`,
+  COLOGNE: `Cologne`,
+  BRUSSELS: `Brussels`,
+  AMSTERDAM: `Amsterdam`,
+  HAMBURG: `Hamburg`,
+  DUSSELDORF: `Dusseldorf`
+};
+
 export const OfferCardType = {
   CITIES: `cities__place-card`,
   FAVORITES: `favorites__card`,

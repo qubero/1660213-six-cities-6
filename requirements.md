@@ -10,6 +10,8 @@ npm i react@16.12 -E
 ## dependencies
 
 * axios@0.21
+* classnames@2.2.6
+* dayjs@1.10.4
 * history@4.10
 * prop-types@15.7
 * react@16.14

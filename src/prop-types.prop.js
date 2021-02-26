@@ -57,6 +57,12 @@ export const offersListPropTypes = {
   ).isRequired
 };
 
+export const offersListWithCityPropTypes = Object.assign(
+    {},
+    offersListPropTypes,
+    {activeCity: PropTypes.string.isRequired}
+);
+
 export const offersListWithTypePropTypes = Object.assign(
     {},
     offersListPropTypes,

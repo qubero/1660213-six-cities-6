@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {reviewCardPropTypes} from '../../prop-types.prop';
-import {getRatingPercentage} from '../../utils/utils';
+import {getRatingPercentage, humanizeDate} from '../../utils/utils';
 
 const ReviewCard = ({review}) => {
   const {
@@ -32,7 +32,7 @@ const ReviewCard = ({review}) => {
           </div>
         </div>
         <p className="reviews__text">{comment}</p>
-        <time className="reviews__time" dateTime="2019-04-24">{date}</time>
+        <time className="reviews__time" dateTime={`${humanizeDate(date, `YYYY-MM-DD`)}`}>{humanizeDate(date, `MMMM YYYY`)}</time>
       </div>
     </li>
   );
