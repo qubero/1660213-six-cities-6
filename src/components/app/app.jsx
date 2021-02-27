@@ -7,8 +7,7 @@ import FavoritesScreen from '../screens/favorites-screen/favorites-screen';
 import NotFoundScreen from '../screens/not-found-screen/not-found-screen';
 import {offersListPropTypes} from '../../prop-types.prop';
 
-const App = (props) => {
-  const {offers} = props;
+const App = ({offers}) => {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   return (
