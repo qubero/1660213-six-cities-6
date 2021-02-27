@@ -7,7 +7,7 @@ import {getRatingPercentage} from '../../utils/utils';
 
 const noop = () => { };
 
-const OfferCard = ({offer, offerCardType, onOfferHover = noop}) => {
+const OfferCard = ({offer, offerCardType, onOfferHover = noop, onOfferBlur = noop}) => {
   const {
     id,
     type,
@@ -25,6 +25,8 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop}) => {
     <article
       onFocus={() => onOfferHover(id)}
       onMouseEnter={() => onOfferHover(id)}
+      onBlur={() => onOfferBlur()}
+      onMouseLeave={() => onOfferBlur()}
       className={`place-card ${offerCardType}`}
     >
       {isPremium &&
@@ -76,7 +78,8 @@ OfferCard.propTypes = {
       offerCardPropTypes.isRequired,
   ),
   offerCardType: PropTypes.string.isRequired,
-  onOfferHover: PropTypes.func
+  onOfferHover: PropTypes.func,
+  onOfferBlur: PropTypes.func
 };
 
 export default OfferCard;

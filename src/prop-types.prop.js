@@ -54,7 +54,8 @@ export const offerCardPropTypes = {
 export const offersListPropTypes = {
   offers: PropTypes.arrayOf(
       PropTypes.shape(offerCardPropTypes).isRequired
-  ).isRequired
+  ).isRequired,
+  setActiveOfferId: PropTypes.func
 };
 
 export const offersListWithCityPropTypes = Object.assign(
@@ -79,5 +80,6 @@ export const mapPropTypes = Object.assign(
     {},
     offersListPropTypes,
     {city: PropTypes.shape(cityPropTypes).isRequired},
+    {activeOfferId: PropTypes.number},
     {isMainScreen: PropTypes.bool}
 );

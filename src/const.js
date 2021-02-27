@@ -1,3 +1,10 @@
+export const SortType = {
+  POPULAR: `Popular`,
+  PRICE_LOW: `Price: low to high`,
+  PRICE_HIGH: `Price: high to low`,
+  RATING: `Top rated first`
+};
+
 export const CityNames = {
   PARIS: `Paris`,
   COLOGNE: `Cologne`,
