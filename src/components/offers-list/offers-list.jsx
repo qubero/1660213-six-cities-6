@@ -1,18 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {offersListWithTypePropTypes} from '../../prop-types.prop';
 import OfferCard from '../offer-card/offer-card';
 
-const OffersList = ({offers, offerCardType}) => {
-  const [, setHoverOfferId] = useState(null);
-
+const OffersList = ({offers, offerCardType, setActiveOfferId}) => {
   const handleOfferHover = (offerId) => {
-    setHoverOfferId(offerId);
+    setActiveOfferId(offerId);
+  };
+
+  const handleOfferBlur = () => {
+    setActiveOfferId(null);
   };
 
   return (
     <>
       {offers.map((offer) =>
-        <OfferCard key={offer.id} offer={offer} offerCardType={offerCardType} onOfferHover={handleOfferHover} />
+        <OfferCard
+          key={offer.id}
+          offer={offer}
+          offerCardType={offerCardType}
+          onOfferBlur={handleOfferBlur}
+          onOfferHover={handleOfferHover}
+        />
       )}
     </>
   );
