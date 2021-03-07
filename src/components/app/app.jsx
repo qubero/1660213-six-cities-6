@@ -5,11 +5,8 @@ import AuthScreen from '../screens/auth-screen/auth-screen';
 import RoomScreen from '../screens/room-screen/room-screen';
 import FavoritesScreen from '../screens/favorites-screen/favorites-screen';
 import NotFoundScreen from '../screens/not-found-screen/not-found-screen';
-import {offersListPropTypes} from '../../prop-types.prop';
 
-const App = ({offers}) => {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-
+const App = () => {
   return (
     <BrowserRouter>
       <Switch>
@@ -17,7 +14,7 @@ const App = ({offers}) => {
           <MainScreen />
         </Route>
         <Route exact path="/favorites">
-          <FavoritesScreen offers={favoriteOffers} />
+          <FavoritesScreen />
         </Route>
         <Route exact path="/login">
           <AuthScreen />
@@ -32,7 +29,5 @@ const App = ({offers}) => {
     </BrowserRouter>
   );
 };
-
-App.propTypes = offersListPropTypes;
 
 export default App;

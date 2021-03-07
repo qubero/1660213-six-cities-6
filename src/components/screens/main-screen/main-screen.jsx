@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from '../../header/header';
 import Map from '../../map/map';
+import LoadingScreen from '../loading-screen/loading-screen';
 import OfferSort from '../../offer-sort/offer-sort';
 import OffersListProxy from '../../offers-list-proxy/offers-list-proxy';
 import {OfferCardType} from '../../../const';
@@ -8,10 +9,23 @@ import CityList from '../../city-list/city-list';
 import {getOffersByCity, getSortedOffers} from '../../../utils/utils';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
-import {offersListWithCityPropTypes} from '../../../prop-types.prop';
+import {mainScreenPropTypes} from '../../../prop-types.prop';
+import {fetchOffersList} from '../../../store/api-actions';
 
-const MainScreen = ({offers, activeCity}) => {
+const MainScreen = ({offers, isOffersLoaded, onLoadOffers, activeCity}) => {
   const [activeOfferId, setActiveOfferId] = useState(null);
+
+  useEffect(() => {
+    if (!isOffersLoaded) {
+      onLoadOffers();
+    }
+  }, [isOffersLoaded]);
+
+  if (!isOffersLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -57,12 +71,19 @@ const MainScreen = ({offers, activeCity}) => {
   );
 };
 
-MainScreen.propTypes = offersListWithCityPropTypes;
+MainScreen.propTypes = mainScreenPropTypes;
 
 const mapStateToProps = (state) => ({
   activeCity: state.activeCity,
-  offers: getSortedOffers(getOffersByCity(state.offers, state.activeCity), state.activeSort)
+  offers: getSortedOffers(getOffersByCity(state.offers, state.activeCity), state.activeSort),
+  isOffersLoaded: state.isOffersLoaded
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onLoadOffers() {
+    dispatch(fetchOffersList());
+  }
 });
 
 export {MainScreen};
-export default connect(mapStateToProps)(MainScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
