@@ -58,14 +58,6 @@ export const offersListPropTypes = {
   setActiveOfferId: PropTypes.func
 };
 
-export const mainScreenPropTypes = Object.assign(
-    {},
-    offersListPropTypes,
-    {isOffersLoaded: PropTypes.bool.isRequired},
-    {onLoadOffers: PropTypes.func.isRequired},
-    {activeCity: PropTypes.string.isRequired}
-);
-
 export const offersListWithTypePropTypes = Object.assign(
     {},
     offersListPropTypes,
@@ -85,3 +77,32 @@ export const mapPropTypes = Object.assign(
     {activeOfferId: PropTypes.number},
     {isMainScreen: PropTypes.bool}
 );
+
+export const mainScreenPropTypes = Object.assign(
+    {},
+    offersListPropTypes,
+    {isOffersLoaded: PropTypes.bool.isRequired},
+    {onLoadOffers: PropTypes.func.isRequired},
+    {activeCity: PropTypes.string.isRequired}
+);
+
+export const authScreenPropTypes = {
+  onSubmit: PropTypes.func.isRequired
+};
+
+export const privateRoutePropTypes = {
+  authorizationStatus: PropTypes.string.isRequired,
+  props: PropTypes.object,
+  children: PropTypes.node
+};
+
+export const headerPropTypes = {
+  authorizationStatus: PropTypes.string.isRequired,
+  userInfo: PropTypes.shape(
+      Object.assign(
+          {},
+          userCardPropTypes,
+          {email: PropTypes.string.isRequired}
+      )
+  )
+};
