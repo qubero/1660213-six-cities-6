@@ -4,6 +4,7 @@ import {adaptOffersToClient} from '../utils/utils';
 
 const initialState = {
   authorizationStatus: AuthorizationStatus.NO_AUTH,
+  userInfo: {},
   activeSort: SortType.POPULAR,
   activeCity: CityNames.PARIS,
   offers: [],
@@ -26,6 +27,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authorizationStatus: action.payload
+      };
+    case ActionType.SET_USER_INFO:
+      return {
+        ...state,
+        userInfo: action.payload
       };
     case ActionType.LOAD_OFFERS:
       return {
