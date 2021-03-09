@@ -38,3 +38,45 @@ export const getSortedOffers = (offers, sortType) => {
       return [...offers];
   }
 };
+
+export const adaptOfferToClient = (offer) => (
+  {
+    id: offer.id,
+    type: offer.type,
+    title: offer.title,
+    description: offer.description,
+    price: offer.price,
+    rating: offer.rating,
+    isFavorite: offer.is_favorite,
+    isPremium: offer.is_premium,
+    image: offer.preview_image,
+    galleryList: offer.images,
+    bedrooms: offer.bedrooms,
+    maxAdults: offer.max_adults,
+    services: offer.goods,
+    city: {
+      location: {
+        latitude: offer.city.location.latitude,
+        longitude: offer.city.location.longitude,
+        zoom: offer.city.location.zoom
+      },
+      name: offer.city.name
+    },
+    location: {
+      latitude: offer.location.latitude,
+      longitude: offer.location.longitude,
+      zoom: offer.location.zoom
+    },
+    host: {
+      id: offer.host.id,
+      isPro: offer.host.is_pro,
+      name: offer.host.name,
+      avatar: offer.host.avatar_url
+    }
+  }
+);
+
+
+export const adaptOffersToClient = (offers) => (
+  offers.map((offer) => adaptOfferToClient(offer))
+);

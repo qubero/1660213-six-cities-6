@@ -1,11 +1,13 @@
-import {CityNames, SortType} from '../const';
+import {CityNames, SortType, AuthorizationStatus} from '../const';
 import {ActionType} from './action';
-import {offerCards as offers} from '../mocks/offers';
+import {adaptOffersToClient} from '../utils/utils';
 
 const initialState = {
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
   activeSort: SortType.POPULAR,
   activeCity: CityNames.PARIS,
-  offers
+  offers: [],
+  isOffersLoaded: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +21,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         activeCity: action.payload
+      };
+    case ActionType.REQUIRE_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload
+      };
+    case ActionType.LOAD_OFFERS:
+      return {
+        ...state,
+        offers: adaptOffersToClient(action.payload),
+        isOffersLoaded: true
       };
   }
 

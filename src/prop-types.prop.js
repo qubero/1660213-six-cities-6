@@ -58,9 +58,11 @@ export const offersListPropTypes = {
   setActiveOfferId: PropTypes.func
 };
 
-export const offersListWithCityPropTypes = Object.assign(
+export const mainScreenPropTypes = Object.assign(
     {},
     offersListPropTypes,
+    {isOffersLoaded: PropTypes.bool.isRequired},
+    {onLoadOffers: PropTypes.func.isRequired},
     {activeCity: PropTypes.string.isRequired}
 );
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import FavoritesList from '../../favorites-list/favorites-list';
@@ -24,4 +25,9 @@ const FavoritesScreen = ({offers}) => {
 
 FavoritesScreen.propTypes = offersListPropTypes;
 
-export default FavoritesScreen;
+const mapStateToProps = (state) => ({
+  offers: state.offers.filter((offer) => offer.isFavorite)
+});
+
+export {FavoritesScreen};
+export default connect(mapStateToProps)(FavoritesScreen);
