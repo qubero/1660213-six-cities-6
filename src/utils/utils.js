@@ -76,7 +76,25 @@ export const adaptOfferToClient = (offer) => (
   }
 );
 
-
 export const adaptOffersToClient = (offers) => (
   offers.map((offer) => adaptOfferToClient(offer))
+);
+
+export const adaptReviewToClient = (review) => (
+  {
+    id: review.id,
+    comment: review.comment,
+    date: review.date,
+    rating: review.rating,
+    user: {
+      id: review.user.id,
+      isPro: review.user.is_pro,
+      name: review.user.name,
+      avatar: review.user.avatar_url
+    }
+  }
+);
+
+export const adaptReviewsToClient = (reviews) => (
+  reviews.map((review) => adaptReviewToClient(review))
 );

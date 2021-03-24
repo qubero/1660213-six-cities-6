@@ -1,6 +1,6 @@
-import {CityNames, SortType, AuthorizationStatus} from '../const';
+import {CityNames, SortType, AuthorizationStatus, FetchStatus} from '../const';
 import {ActionType} from './action';
-import {adaptOffersToClient} from '../utils/utils';
+import {adaptOfferToClient, adaptOffersToClient, adaptReviewsToClient} from '../utils/utils';
 
 const initialState = {
   authorizationStatus: AuthorizationStatus.NO_AUTH,
@@ -9,9 +9,16 @@ const initialState = {
   activeCity: CityNames.PARIS,
   offers: [],
   isOffersLoaded: false,
+  offer: {},
+  isOfferLoaded: false,
+  nearby: [],
+  isNearbyLoaded: false,
+  reviews: [],
+  favoriteOffers: [],
+  fetchStatus: FetchStatus.PENDING
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {  
   switch (action.type) {
     case ActionType.CHANGE_SORT:
       return {
@@ -38,6 +45,37 @@ const reducer = (state = initialState, action) => {
         ...state,
         offers: adaptOffersToClient(action.payload),
         isOffersLoaded: true
+      };
+    case ActionType.LOAD_OFFER:
+      return {
+        ...state,
+        offer: adaptOfferToClient(action.payload),
+        isOfferLoaded: true
+      };
+    case ActionType.LOAD_NEARBY:
+      return {
+        ...state,
+        nearby: adaptOffersToClient(action.payload),
+        isNearbyLoaded: true
+      };
+    case ActionType.LOAD_REVIEWS:
+      return {
+        ...state,
+        reviews: adaptReviewsToClient(action.payload)
+      };
+    case ActionType.CLEAR_OFFER:
+      return {
+        ...state,
+        offer: {},
+        isOfferLoaded: false,
+        nearby: [],
+        isNearbyLoaded: false,
+        reviews: []
+      };
+    case ActionType.CHANGE_FETCH_STATUS:
+      return {
+        ...state,
+        fetchStatus: action.payload
       };
   }
 

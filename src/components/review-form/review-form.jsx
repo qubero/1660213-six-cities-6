@@ -1,4 +1,7 @@
 import React, {Fragment, useState} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {sendOfferReview} from '../../store/api-actions';
 
 const starsTitles = [
   `terribly`,
@@ -8,16 +11,19 @@ const starsTitles = [
   `perfect`
 ];
 
-const ReviewForm = () => {
-  const [userForm, setUserForm] = useState({
-    rating: 0,
-    review: ``,
-  });
+const formStub = {
+  rating: 0,
+  review: ``,
+};
 
+const ReviewForm = ({id, onSubmit}) => {
+  const [userForm, setUserForm] = useState(formStub);
   const {rating, review} = userForm;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    onSubmit(id, userForm);
+    setUserForm(formStub);
   };
 
   const handleFieldChange = (evt) => {
@@ -77,4 +83,16 @@ const ReviewForm = () => {
   );
 };
 
-export default ReviewForm;
+const mapDispatchToProps = (dispatch) => ({
+  onSubmit(id, comment) {
+    dispatch(sendOfferReview(id, comment));
+  }
+});
+
+ReviewForm.propTypes = {
+  id: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired
+};
+
+export {ReviewForm};
+export default connect(null, mapDispatchToProps)(ReviewForm);

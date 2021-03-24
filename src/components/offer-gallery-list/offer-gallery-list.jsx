@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const OfferGalleryList = ({images}) => {
+const OfferGalleryList = ({images: allImages}) => {
+  const images = allImages.slice(0, 6);
+
   return (
     <div className="property__gallery-container container">
       <div className="property__gallery">
