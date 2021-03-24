@@ -4,7 +4,7 @@ import {Link, useHistory} from 'react-router-dom';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {offerCardPropTypes} from '../../prop-types.prop';
-import {OfferCardType, OfferImageMap, AuthorizationStatus} from '../../const';
+import {OfferCardType, OfferImageMap, AuthorizationStatus, AppRoutes} from '../../const';
 import {getRatingPercentage} from '../../utils/utils';
 import {sendFavoriteStatus} from '../../store/api-actions';
 
@@ -34,11 +34,11 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop, onOfferBlur = noo
     setIsFavorite(offer.isFavorite);
   }, [offer]);
 
-  const handleFavoriteClick = (id, status) => {
+  const handleFavoriteClick = (currentId, status) => {
     if (!isAuth) {
       history.push(AppRoutes.LOGIN);
     } else {
-      dispatch(sendFavoriteStatus(id, +status));
+      dispatch(sendFavoriteStatus(currentId, +status));
       setIsFavorite(status);
     }
   };
@@ -76,7 +76,7 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop, onOfferBlur = noo
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
-          </div>            
+          </div>
           <button
             className={classNames(`place-card__bookmark-button button`, {
               'place-card__bookmark-button--active': isFavorite

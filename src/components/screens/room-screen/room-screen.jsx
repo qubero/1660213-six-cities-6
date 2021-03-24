@@ -29,7 +29,7 @@ const RoomScreen = () => {
   const offer = useSelector((state) => state.offer);
   const nearby = useSelector((state) => state.nearby);
   const fetchStatus = useSelector((state) => state.fetchStatus);
-  
+
   const [activeOfferId, setActiveOfferId] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -57,11 +57,11 @@ const RoomScreen = () => {
     return <NotFoundScreen />;
   }
 
-  const handleFavoriteClick = (id, status) => {
+  const handleFavoriteClick = (currentId, status) => {
     if (!isAuth) {
       history.push(AppRoutes.LOGIN);
     } else {
-      dispatch(sendFavoriteStatus(id, +status));
+      dispatch(sendFavoriteStatus(currentId, +status));
       setIsFavorite(status);
     }
   };

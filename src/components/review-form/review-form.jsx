@@ -16,13 +16,13 @@ const formStub = {
   review: ``,
 };
 
-const ReviewForm = ({id, onSubmit}) => {
+const ReviewForm = ({id: currentId, onSubmit}) => {
   const [userForm, setUserForm] = useState(formStub);
   const {rating, review} = userForm;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onSubmit(id, userForm);
+    onSubmit(currentId, userForm);
     setUserForm(formStub);
   };
 
