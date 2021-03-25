@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {useHistory, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import classNames from 'classnames';
 
-import {fetchOffer, fetchNearbyList, sendFavoriteStatus, fetchOfferReviews} from '../../../store/api-actions';
+import {fetchOffer, fetchNearbyList, fetchOfferReviews} from '../../../store/api-actions';
 import {ActionCreator} from '../../../store/action';
 import {getRatingPercentage, getFirstLetterUppercase} from '../../../utils/utils';
-import {AuthorizationStatus, AppRoutes, FetchStatus} from '../../../const';
+import {FetchStatus} from '../../../const';
+import {useIsFavorite} from '../../../hooks/use-is-favorite';
 
 import Header from '../../header/header';
 import ReviewsList from '../../reviews-list/reviews-list';
@@ -20,22 +21,14 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 const RoomScreen = () => {
   const {id} = useParams();
-  const history = useHistory();
   const dispatch = useDispatch();
 
-  const isAuth = useSelector((state) =>
-    state.authorizationStatus === AuthorizationStatus.AUTH
-  );
   const offer = useSelector((state) => state.offer);
   const nearby = useSelector((state) => state.nearby);
   const fetchStatus = useSelector((state) => state.fetchStatus);
 
   const [activeOfferId, setActiveOfferId] = useState(null);
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  useEffect(() => {
-    setIsFavorite(offer.isFavorite);
-  }, [offer]);
+  const [isFavorite, handleFavoriteClick] = useIsFavorite(offer.isFavorite);
 
   useEffect(() => {
     dispatch(fetchOffer(id));
@@ -56,15 +49,6 @@ const RoomScreen = () => {
   if (fetchStatus === FetchStatus.ERROR) {
     return <NotFoundScreen />;
   }
-
-  const handleFavoriteClick = (currentId, status) => {
-    if (!isAuth) {
-      history.push(AppRoutes.LOGIN);
-    } else {
-      dispatch(sendFavoriteStatus(currentId, +status));
-      setIsFavorite(status);
-    }
-  };
 
   const {
     type,
@@ -106,7 +90,6 @@ const RoomScreen = () => {
                     })}
                     type="button"
                     onClick={() => handleFavoriteClick(id, !isFavorite)}
-                    disabled={!isAuth}
                   >
                     <svg className="property__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
@@ -119,7 +102,9 @@ const RoomScreen = () => {
                     <span style={{width: getRatingPercentage(rating)}}></span>
                     <span className="visually-hidden">Rating</span>
                   </div>
-                  <span className="property__rating-value rating__value">{rating}</span>
+                  <span className="property__rating-value rating__value">
+                    {rating}
+                  </span>
                 </div>
                 <ul className="property__features">
                   <li className="property__feature property__feature--entire">
@@ -144,7 +129,12 @@ const RoomScreen = () => {
             <Map city={city} offers={nearby} activeOfferId={activeOfferId} />
           </section>
           <div className="container">
-            {nearby && <OffersNearbyList offers={nearby} setActiveOfferId={setActiveOfferId} />}
+            {nearby &&
+              <OffersNearbyList
+                offers={nearby}
+                setActiveOfferId={setActiveOfferId}
+              />
+            }
           </div>
         </main>
       </div>
