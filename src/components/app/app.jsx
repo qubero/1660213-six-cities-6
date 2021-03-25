@@ -22,9 +22,9 @@ const App = () => {
         <Route exact path={AppRoutes.LOGIN}>
           <AuthScreen />
         </Route>
-        <PrivateRoute exact path={AppRoutes.OFFER_ID}>
+        <Route exact path={AppRoutes.OFFER_ID}>
           <RoomScreen />
-        </PrivateRoute>
+        </Route>
         <Route>
           <NotFoundScreen />
         </Route>

@@ -1,29 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {reviewCardPropTypes} from '../../prop-types.prop';
+import {useSelector} from 'react-redux';
 import ReviewCard from '../review-card/review-card';
 import ReviewForm from '../review-form/review-form';
+import {AuthorizationStatus} from '../../const';
 
-const ReviewsList = ({reviews}) => {
+const ReviewsList = ({id}) => {
+  const isAuth = useSelector((state) =>
+    state.authorizationStatus === AuthorizationStatus.AUTH
+  );
+  const reviews = useSelector((state) => state.reviews);
+
   return (
     <section className="property__reviews reviews">
-      <h2 className="reviews__title">Reviews · <span className="reviews__amount">{reviews.length}</span></h2>
+      <h2 className="reviews__title">
+        Reviews · <span className="reviews__amount">{reviews.length}</span>
+      </h2>
       <ul className="reviews__list">
         {reviews.map((review) =>
           <ReviewCard key={review.id} review={review} />
         )}
       </ul>
-      <ReviewForm/>
+      {isAuth && <ReviewForm id={id} />}
     </section>
   );
 };
 
 ReviewsList.propTypes = {
-  reviews: PropTypes.arrayOf(
-      PropTypes.shape(
-          reviewCardPropTypes,
-      ),
-  ).isRequired
+  id: PropTypes.string.isRequired
 };
 
 export default ReviewsList;

@@ -2,13 +2,23 @@ export const AppRoutes = {
   ROOT: `/`,
   LOGIN: `/login`,
   FAVORITES: `/favorites`,
-  OFFER_ID: `/offer/:id`
+  OFFER_ID: `/offer/:id`,
+  ERROR: `/error`
+};
+
+export const FetchStatus = {
+  PENDING: `PENDING`,
+  SENDING: `SENDING`,
+  DONE: `DONE`,
+  ERROR: `ERROR`
 };
 
 export const APIRoutes = {
   LOGIN: `/login`,
   LOGOUT: `/logout`,
-  OFFERS: `/hotels`
+  OFFERS: `/hotels`,
+  REVIEWS: `/comments`,
+  FAVORITE: `/favorite`
 };
 
 export const AuthorizationStatus = {

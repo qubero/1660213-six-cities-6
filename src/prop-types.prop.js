@@ -98,11 +98,11 @@ export const privateRoutePropTypes = {
 
 export const headerPropTypes = {
   authorizationStatus: PropTypes.string.isRequired,
-  userInfo: PropTypes.shape(
-      Object.assign(
-          {},
-          userCardPropTypes,
-          {email: PropTypes.string.isRequired}
-      )
-  )
+  userInfo: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    avatar: PropTypes.string,
+    isPro: PropTypes.bool,
+    email: PropTypes.string
+  })
 };

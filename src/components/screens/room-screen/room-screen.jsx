@@ -1,16 +1,71 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {useHistory, useParams} from 'react-router-dom';
+import classNames from 'classnames';
+
+import {fetchOffer, fetchNearbyList, sendFavoriteStatus, fetchOfferReviews} from '../../../store/api-actions';
+import {ActionCreator} from '../../../store/action';
+import {getRatingPercentage, getFirstLetterUppercase} from '../../../utils/utils';
+import {AuthorizationStatus, AppRoutes, FetchStatus} from '../../../const';
+
 import Header from '../../header/header';
 import ReviewsList from '../../reviews-list/reviews-list';
-import {reviewCards} from '../../../mocks/reviews';
 import Map from '../../map/map';
 import OfferHost from '../../offer-host/offer-host';
 import OffersNearbyList from '../../offers-nearby-list/offers-nearby-list';
 import OfferGalleryList from '../../offer-gallery-list/offer-gallery-list';
 import OfferServicesList from '../../offer-services-list.jsx/offer-services-list';
-import {offerCards} from '../../../mocks/offers';
-import {getRatingPercentage, getFirstLetterUppercase} from '../../../utils/utils';
+import LoadingScreen from '../loading-screen/loading-screen';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 const RoomScreen = () => {
+  const {id} = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const isAuth = useSelector((state) =>
+    state.authorizationStatus === AuthorizationStatus.AUTH
+  );
+  const offer = useSelector((state) => state.offer);
+  const nearby = useSelector((state) => state.nearby);
+  const fetchStatus = useSelector((state) => state.fetchStatus);
+
+  const [activeOfferId, setActiveOfferId] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    setIsFavorite(offer.isFavorite);
+  }, [offer]);
+
+  useEffect(() => {
+    dispatch(fetchOffer(id));
+    dispatch(fetchNearbyList(id));
+    dispatch(fetchOfferReviews(id));
+
+    return () => {
+      dispatch(ActionCreator.clearOffer());
+    };
+  }, [id]);
+
+  if (fetchStatus === FetchStatus.PENDING) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (fetchStatus === FetchStatus.ERROR) {
+    return <NotFoundScreen />;
+  }
+
+  const handleFavoriteClick = (currentId, status) => {
+    if (!isAuth) {
+      history.push(AppRoutes.LOGIN);
+    } else {
+      dispatch(sendFavoriteStatus(currentId, +status));
+      setIsFavorite(status);
+    }
+  };
+
   const {
     type,
     title,
@@ -22,69 +77,79 @@ const RoomScreen = () => {
     bedrooms,
     maxAdults,
     services,
-    host
-  } = offerCards[0];
+    host,
+    city
+  } = offer;
 
   return (
-    <div className="page">
-      <Header />
+    !!Object.keys(offer).length &&
+      <div className="page">
+        <Header />
 
-      <main className="page__main page__main--property">
-        <section className="property">
-          <OfferGalleryList images={galleryList} />
-          <div className="property__container container">
-            <div className="property__wrapper">
-              {isPremium &&
-                <div className="property__mark">
-                  <span>Premium</span>
+        <main className="page__main page__main--property">
+          <section className="property">
+            <OfferGalleryList images={galleryList} />
+            <div className="property__container container">
+              <div className="property__wrapper">
+                {isPremium &&
+                  <div className="property__mark">
+                    <span>Premium</span>
+                  </div>
+                }
+                <div className="property__name-wrapper">
+                  <h1 className="property__name">
+                    {title}
+                  </h1>
+                  <button
+                    className={classNames(`property__bookmark-button button`, {
+                      'property__bookmark-button--active': isFavorite
+                    })}
+                    type="button"
+                    onClick={() => handleFavoriteClick(id, !isFavorite)}
+                    disabled={!isAuth}
+                  >
+                    <svg className="property__bookmark-icon" width="31" height="33">
+                      <use xlinkHref="#icon-bookmark"></use>
+                    </svg>
+                    <span className="visually-hidden">To bookmarks</span>
+                  </button>
                 </div>
-              }
-              <div className="property__name-wrapper">
-                <h1 className="property__name">
-                  {title}
-                </h1>
-                <button className="property__bookmark-button button" type="button">
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
-              </div>
-              <div className="property__rating rating">
-                <div className="property__stars rating__stars">
-                  <span style={{width: getRatingPercentage(rating)}}></span>
-                  <span className="visually-hidden">Rating</span>
+                <div className="property__rating rating">
+                  <div className="property__stars rating__stars">
+                    <span style={{width: getRatingPercentage(rating)}}></span>
+                    <span className="visually-hidden">Rating</span>
+                  </div>
+                  <span className="property__rating-value rating__value">{rating}</span>
                 </div>
-                <span className="property__rating-value rating__value">{rating}</span>
+                <ul className="property__features">
+                  <li className="property__feature property__feature--entire">
+                    {getFirstLetterUppercase(type)}
+                  </li>
+                  <li className="property__feature property__feature--bedrooms">
+                    {bedrooms} Bedrooms
+                  </li>
+                  <li className="property__feature property__feature--adults">
+                    Max {maxAdults} adults
+                  </li>
+                </ul>
+                <div className="property__price">
+                  <b className="property__price-value">&euro;{price}</b>
+                  <span className="property__price-text">&nbsp;night</span>
+                </div>
+                <OfferServicesList services={services} />
+                <OfferHost host={host} description={description} />
+                <ReviewsList id={id} />
               </div>
-              <ul className="property__features">
-                <li className="property__feature property__feature--entire">
-                  {getFirstLetterUppercase(type)}
-                </li>
-                <li className="property__feature property__feature--bedrooms">
-                  {bedrooms} Bedrooms
-                </li>
-                <li className="property__feature property__feature--adults">
-                  Max {maxAdults} adults
-                </li>
-              </ul>
-              <div className="property__price">
-                <b className="property__price-value">&euro;{price}</b>
-                <span className="property__price-text">&nbsp;night</span>
-              </div>
-              <OfferServicesList services={services} />
-              <OfferHost host={host} description={description} />
-              <ReviewsList reviews={reviewCards} />
             </div>
+            <Map city={city} offers={nearby} activeOfferId={activeOfferId} />
+          </section>
+          <div className="container">
+            {nearby && <OffersNearbyList offers={nearby} setActiveOfferId={setActiveOfferId} />}
           </div>
-          <Map city={offerCards[0].city} offers={offerCards.slice(0, 3)} />
-        </section>
-        <div className="container">
-          <OffersNearbyList offers={offerCards.slice(0, 3)} />
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
   );
 };
 
+export {RoomScreen};
 export default RoomScreen;
