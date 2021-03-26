@@ -1,10 +1,12 @@
 import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
+import {useIsActive} from '../../hooks/use-is-active';
 import {mapPropTypes} from '../../prop-types.prop';
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({city, offers, activeOfferId, isMainScreen = false}) => {
+const Map = ({city, offers, isMainScreen = false}) => {
+  const [activeOfferId] = useIsActive(null);
   const mapRef = useRef();
 
   const basicIcon = leaflet.icon({

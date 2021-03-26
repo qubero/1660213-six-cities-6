@@ -1,20 +1,21 @@
 import React, {useRef} from 'react';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {login} from '../../../store/api-actions';
 import Header from '../../header/header';
-import {authScreenPropTypes} from '../../../prop-types.prop';
 
-const AuthScreen = ({onSubmit}) => {
+const AuthScreen = () => {
+  const dispatch = useDispatch();
+
   const loginRef = useRef();
   const passwordRef = useRef();
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    onSubmit({
+    dispatch(login({
       login: loginRef.current.value,
       password: passwordRef.current.value
-    });
+    }));
   };
 
   return (
@@ -68,13 +69,5 @@ const AuthScreen = ({onSubmit}) => {
   );
 };
 
-AuthScreen.propTypes = authScreenPropTypes;
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit(authData) {
-    dispatch(login(authData));
-  }
-});
-
 export {AuthScreen};
-export default connect(null, mapDispatchToProps)(AuthScreen);
+export default AuthScreen;

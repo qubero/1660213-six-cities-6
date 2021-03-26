@@ -6,10 +6,10 @@ import ReviewForm from '../review-form/review-form';
 import {AuthorizationStatus} from '../../const';
 
 const ReviewsList = ({id}) => {
-  const isAuth = useSelector((state) =>
-    state.authorizationStatus === AuthorizationStatus.AUTH
+  const isAuth = useSelector(({USER}) =>
+    USER.authorizationStatus === AuthorizationStatus.AUTH
   );
-  const reviews = useSelector((state) => state.reviews);
+  const reviews = useSelector(({OFFER}) => OFFER.reviews);
 
   return (
     <section className="property__reviews reviews">

@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import classNames from 'classnames';
 
 import {fetchOffer, fetchNearbyList, fetchOfferReviews} from '../../../store/api-actions';
-import {ActionCreator} from '../../../store/action';
+import {clearOffer} from '../../../store/action';
 import {getRatingPercentage, getFirstLetterUppercase} from '../../../utils/utils';
 import {FetchStatus} from '../../../const';
 import {useIsFavorite} from '../../../hooks/use-is-favorite';
@@ -23,11 +23,10 @@ const RoomScreen = () => {
   const {id} = useParams();
   const dispatch = useDispatch();
 
-  const offer = useSelector((state) => state.offer);
-  const nearby = useSelector((state) => state.nearby);
-  const fetchStatus = useSelector((state) => state.fetchStatus);
+  const offer = useSelector(({OFFER}) => OFFER.offer);
+  const nearby = useSelector(({OFFER}) => OFFER.nearby);
+  const fetchStatus = useSelector(({OFFER}) => OFFER.fetchStatus);
 
-  const [activeOfferId, setActiveOfferId] = useState(null);
   const [isFavorite, handleFavoriteClick] = useIsFavorite(offer.isFavorite);
 
   useEffect(() => {
@@ -36,7 +35,7 @@ const RoomScreen = () => {
     dispatch(fetchOfferReviews(id));
 
     return () => {
-      dispatch(ActionCreator.clearOffer());
+      dispatch(clearOffer());
     };
   }, [id]);
 
@@ -126,14 +125,11 @@ const RoomScreen = () => {
                 <ReviewsList id={id} />
               </div>
             </div>
-            <Map city={city} offers={nearby} activeOfferId={activeOfferId} />
+            <Map city={city} offers={nearby} />
           </section>
           <div className="container">
             {nearby &&
-              <OffersNearbyList
-                offers={nearby}
-                setActiveOfferId={setActiveOfferId}
-              />
+              <OffersNearbyList offers={nearby}/>
             }
           </div>
         </main>

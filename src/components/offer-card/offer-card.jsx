@@ -6,14 +6,11 @@ import {offerCardPropTypes} from '../../prop-types.prop';
 import {OfferCardType, OfferImageMap} from '../../const';
 import {getRatingPercentage} from '../../utils/utils';
 import {useIsFavorite} from '../../hooks/use-is-favorite';
-
-const noop = () => { };
+import {useIsActive} from '../../hooks/use-is-active';
 
 const OfferCard = ({
   offer,
-  offerCardType,
-  onOfferHover = noop,
-  onOfferBlur = noop
+  offerCardType
 }) => {
 
   const {
@@ -27,14 +24,16 @@ const OfferCard = ({
   } = offer;
 
   const offerLink = `/offer/${id}`;
+
+  const [, handleActiveOfferId] = useIsActive();
   const [isFavorite, handleFavoriteClick] = useIsFavorite(offer.isFavorite);
 
   return (
     <article
-      onFocus={() => onOfferHover(id)}
-      onMouseEnter={() => onOfferHover(id)}
-      onBlur={() => onOfferBlur()}
-      onMouseLeave={() => onOfferBlur()}
+      onFocus={() => handleActiveOfferId(id)}
+      onMouseEnter={() => handleActiveOfferId(id)}
+      onBlur={() => handleActiveOfferId(null)}
+      onMouseLeave={() => handleActiveOfferId(null)}
       className={`place-card ${offerCardType}`}
     >
       {isPremium &&
@@ -97,9 +96,7 @@ OfferCard.propTypes = {
   offer: PropTypes.shape(
       offerCardPropTypes.isRequired,
   ),
-  offerCardType: PropTypes.string.isRequired,
-  onOfferHover: PropTypes.func,
-  onOfferBlur: PropTypes.func
+  offerCardType: PropTypes.string.isRequired
 };
 
 export default OfferCard;

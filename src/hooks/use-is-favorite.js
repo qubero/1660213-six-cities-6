@@ -9,8 +9,8 @@ export const useIsFavorite = (initialFavorite) => {
   const dispatch = useDispatch();
 
   const [isFavorite, setIsFavorite] = useState(null);
-  const isAuth = useSelector((state) =>
-    state.authorizationStatus === AuthorizationStatus.AUTH
+  const isAuth = useSelector(({USER}) =>
+    USER.authorizationStatus === AuthorizationStatus.AUTH
   );
 
   useEffect(() => {
