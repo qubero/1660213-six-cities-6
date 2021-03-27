@@ -10,7 +10,8 @@ export const ActionType = {
   LOAD_NEARBY: `offers/loadNearby`,
   LOAD_REVIEWS: `offers/loadReviews`,
   CLEAR_OFFER: `offers/clearOffer`,
-  CHANGE_FETCH_STATUS: `fetch/changeStatus`
+  CHANGE_FETCH_STATUS: `fetch/changeStatus`,
+  SET_ACTIVE_OFFER: `offers/setActiveOffer`
 };
 
 export const changeCity = createAction(ActionType.CHANGE_CITY, (city) => {
@@ -58,6 +59,12 @@ export const loadNearby = createAction(ActionType.LOAD_NEARBY, (offers) => {
 export const loadReviews = createAction(ActionType.LOAD_REVIEWS, (reviews) => {
   return {
     payload: reviews
+  };
+});
+
+export const setActiveOffer = createAction(ActionType.SET_ACTIVE_OFFER, (id) => {
+  return {
+    payload: id
   };
 });
 

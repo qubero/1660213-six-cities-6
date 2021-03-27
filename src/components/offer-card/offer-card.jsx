@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import classNames from 'classnames';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {offerCardPropTypes} from '../../prop-types.prop';
 import {OfferCardType, OfferImageMap} from '../../const';
+import {setActiveOffer} from '../../store/action';
 import {getRatingPercentage} from '../../utils/utils';
 import {useIsFavorite} from '../../hooks/use-is-favorite';
-import {useIsActive} from '../../hooks/use-is-active';
 
 const OfferCard = ({
   offer,
@@ -24,9 +25,12 @@ const OfferCard = ({
   } = offer;
 
   const offerLink = `/offer/${id}`;
-
-  const [, handleActiveOfferId] = useIsActive();
   const [isFavorite, handleFavoriteClick] = useIsFavorite(offer.isFavorite);
+
+  const dispatch = useDispatch();
+  const handleActiveOfferId = (offerId) => {
+    dispatch(setActiveOffer(offerId));
+  };
 
   return (
     <article
