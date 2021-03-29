@@ -1,3 +1,5 @@
+import {createAction} from '@reduxjs/toolkit';
+
 export const ActionType = {
   CHANGE_CITY: `city/changeCity`,
   CHANGE_SORT: `sort/changeSort`,
@@ -8,52 +10,68 @@ export const ActionType = {
   LOAD_NEARBY: `offers/loadNearby`,
   LOAD_REVIEWS: `offers/loadReviews`,
   CLEAR_OFFER: `offers/clearOffer`,
-  CHANGE_FAVORITE_STATUS: `offers/changeFavoriteStatus`,
-  CHANGE_FETCH_STATUS: `fetch/changeStatus`
+  CHANGE_FETCH_STATUS: `fetch/changeStatus`,
+  SET_ACTIVE_OFFER: `offers/setActiveOffer`
 };
 
-export const ActionCreator = {
-  changeCity: (city) => ({
-    type: ActionType.CHANGE_CITY,
+export const changeCity = createAction(ActionType.CHANGE_CITY, (city) => {
+  return {
     payload: city
-  }),
-  changeSort: (sortType) => ({
-    type: ActionType.CHANGE_SORT,
+  };
+});
+
+export const changeSort = createAction(ActionType.CHANGE_SORT, (sortType) => {
+  return {
     payload: sortType
-  }),
-  requireAuthorization: (status) => ({
-    type: ActionType.REQUIRE_AUTHORIZATION,
+  };
+});
+
+export const requireAuthorization = createAction(ActionType.REQUIRE_AUTHORIZATION, (status) => {
+  return {
     payload: status
-  }),
-  setUserInfo: (info) => ({
-    type: ActionType.SET_USER_INFO,
+  };
+});
+
+export const setUserInfo = createAction(ActionType.SET_USER_INFO, (info) => {
+  return {
     payload: info
-  }),
-  loadOffers: (offers) => ({
-    type: ActionType.LOAD_OFFERS,
+  };
+});
+
+export const loadOffers = createAction(ActionType.LOAD_OFFERS, (offers) => {
+  return {
     payload: offers
-  }),
-  loadOffer: (offer) => ({
-    type: ActionType.LOAD_OFFER,
+  };
+});
+
+export const loadOffer = createAction(ActionType.LOAD_OFFER, (offer) => {
+  return {
     payload: offer
-  }),
-  loadNearby: (offers) => ({
-    type: ActionType.LOAD_NEARBY,
+  };
+});
+
+export const loadNearby = createAction(ActionType.LOAD_NEARBY, (offers) => {
+  return {
     payload: offers
-  }),
-  loadReviews: (reviews) => ({
-    type: ActionType.LOAD_REVIEWS,
+  };
+});
+
+export const loadReviews = createAction(ActionType.LOAD_REVIEWS, (reviews) => {
+  return {
     payload: reviews
-  }),
-  changeFavoriteStatus: (offers) => ({
-    type: ActionType.CHANGE_FAVORITE_STATUS,
-    payload: offers
-  }),
-  clearOffer: () => ({
-    type: ActionType.CLEAR_OFFER
-  }),
-  changeFetchStatus: (status) => ({
-    type: ActionType.CHANGE_FETCH_STATUS,
+  };
+});
+
+export const setActiveOffer = createAction(ActionType.SET_ACTIVE_OFFER, (id) => {
+  return {
+    payload: id
+  };
+});
+
+export const clearOffer = createAction(ActionType.CLEAR_OFFER);
+
+export const changeFetchStatus = createAction(ActionType.CHANGE_FETCH_STATUS, (status) => {
+  return {
     payload: status
-  })
-};
+  };
+});

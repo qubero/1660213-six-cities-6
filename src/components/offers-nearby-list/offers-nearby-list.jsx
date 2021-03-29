@@ -3,7 +3,7 @@ import OffersListProxy from '../offers-list-proxy/offers-list-proxy';
 import {offersListPropTypes} from '../../prop-types.prop';
 import {OfferCardType} from '../../const';
 
-const OffersNearbyList = ({offers, setActiveOfferId}) => {
+const OffersNearbyList = ({offers}) => {
   return (
     <section className="near-places places">
       <h2 className="near-places__title">Other places in the neighbourhood</h2>
@@ -11,7 +11,6 @@ const OffersNearbyList = ({offers, setActiveOfferId}) => {
         className={`near-places__list`}
         offers={offers}
         offerCardType={OfferCardType.ROOM}
-        setActiveOfferId={setActiveOfferId}
       />
     </section>
   );

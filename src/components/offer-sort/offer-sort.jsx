@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import classNames from 'classnames';
 import {SortType} from '../../const';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {changeSort} from '../../store/action';
 
-const OfferSort = ({activeSort, onSortChange}) => {
+const OfferSort = () => {
+  const dispatch = useDispatch();
+
+  const {activeSort} = useSelector((state) => state.MAIN);
   const [isOpened, setIsOpened] = useState(false);
 
   const handleSortClick = () => {
@@ -14,7 +16,7 @@ const OfferSort = ({activeSort, onSortChange}) => {
 
   const handleSortChange = (evt) => {
     if (activeSort !== evt.target.innerText) {
-      onSortChange(evt.target.innerText);
+      dispatch(changeSort(evt.target.innerText));
     }
 
     setIsOpened(false);
@@ -23,18 +25,28 @@ const OfferSort = ({activeSort, onSortChange}) => {
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
-      <span className="places__sorting-type" tabIndex="0" onClick={handleSortClick}>
+      <span
+        className="places__sorting-type"
+        tabIndex="0"
+        onClick={handleSortClick}
+      >
         {activeSort}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className={classNames(`places__options places__options--custom`, {'places__options--opened': isOpened})}>
+      <ul className={classNames(
+          `places__options places__options--custom`,
+          {'places__options--opened': isOpened}
+      )}>
         {Object.values(SortType).map((sortType) =>
           <li
             key={sortType}
             tabIndex="0"
-            className={classNames(`places__option`, {'places__option--active': sortType === activeSort})}
+            className={classNames(
+                `places__option`,
+                {'places__option--active': sortType === activeSort}
+            )}
             onClick={handleSortChange}
           >{sortType}</li>
         )}
@@ -43,19 +55,6 @@ const OfferSort = ({activeSort, onSortChange}) => {
   );
 };
 
-const mapStateToProps = ({activeSort}) => ({activeSort});
-
-const mapDispatchToProps = (dispatch) => ({
-  onSortChange(sortType) {
-    dispatch(ActionCreator.changeSort(sortType));
-  }
-});
-
-OfferSort.propTypes = {
-  activeSort: PropTypes.string.isRequired,
-  onSortChange: PropTypes.func.isRequired
-};
-
 export {OfferSort};
-export default connect(mapStateToProps, mapDispatchToProps)(OfferSort);
+export default OfferSort;
 

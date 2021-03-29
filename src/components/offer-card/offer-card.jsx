@@ -1,21 +1,18 @@
-import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {Link, useHistory} from 'react-router-dom';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import classNames from 'classnames';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {offerCardPropTypes} from '../../prop-types.prop';
-import {OfferCardType, OfferImageMap, AuthorizationStatus, AppRoutes} from '../../const';
+import {OfferCardType, OfferImageMap} from '../../const';
+import {setActiveOffer} from '../../store/action';
 import {getRatingPercentage} from '../../utils/utils';
-import {sendFavoriteStatus} from '../../store/api-actions';
+import {useIsFavorite} from '../../hooks/use-is-favorite';
 
-const noop = () => { };
-
-const OfferCard = ({offer, offerCardType, onOfferHover = noop, onOfferBlur = noop}) => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const isAuth = useSelector((state) =>
-    state.authorizationStatus === AuthorizationStatus.AUTH
-  );
+const OfferCard = ({
+  offer,
+  offerCardType
+}) => {
 
   const {
     id,
@@ -28,27 +25,19 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop, onOfferBlur = noo
   } = offer;
 
   const offerLink = `/offer/${id}`;
-  const [isFavorite, setIsFavorite] = useState(offer.isFavorite);
+  const [isFavorite, handleFavoriteClick] = useIsFavorite(offer.isFavorite);
 
-  useEffect(() => {
-    setIsFavorite(offer.isFavorite);
-  }, [offer]);
-
-  const handleFavoriteClick = (currentId, status) => {
-    if (!isAuth) {
-      history.push(AppRoutes.LOGIN);
-    } else {
-      dispatch(sendFavoriteStatus(currentId, +status));
-      setIsFavorite(status);
-    }
+  const dispatch = useDispatch();
+  const handleActiveOfferId = (offerId) => {
+    dispatch(setActiveOffer(offerId));
   };
 
   return (
     <article
-      onFocus={() => onOfferHover(id)}
-      onMouseEnter={() => onOfferHover(id)}
-      onBlur={() => onOfferBlur()}
-      onMouseLeave={() => onOfferBlur()}
+      onFocus={() => handleActiveOfferId(id)}
+      onMouseEnter={() => handleActiveOfferId(id)}
+      onBlur={() => handleActiveOfferId(null)}
+      onMouseLeave={() => handleActiveOfferId(null)}
       className={`place-card ${offerCardType}`}
     >
       {isPremium &&
@@ -56,7 +45,9 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop, onOfferBlur = noo
           <span>Premium</span>
         </div>
       }
-      <div className={`place-card__image-wrapper ${OfferImageMap.get(offerCardType).class}`}>
+      <div className={
+        `place-card__image-wrapper ${OfferImageMap.get(offerCardType).class}`
+      }>
         <Link to={offerLink}>
           <img
             className="place-card__image"
@@ -83,7 +74,6 @@ const OfferCard = ({offer, offerCardType, onOfferHover = noop, onOfferBlur = noo
             })}
             type="button"
             onClick={() => handleFavoriteClick(id, !isFavorite)}
-            disabled={!isAuth}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
@@ -110,9 +100,7 @@ OfferCard.propTypes = {
   offer: PropTypes.shape(
       offerCardPropTypes.isRequired,
   ),
-  offerCardType: PropTypes.string.isRequired,
-  onOfferHover: PropTypes.func,
-  onOfferBlur: PropTypes.func
+  offerCardType: PropTypes.string.isRequired
 };
 
 export default OfferCard;

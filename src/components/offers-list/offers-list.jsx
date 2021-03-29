@@ -2,15 +2,7 @@ import React from 'react';
 import {offersListWithTypePropTypes} from '../../prop-types.prop';
 import OfferCard from '../offer-card/offer-card';
 
-const OffersList = ({offers, offerCardType, setActiveOfferId}) => {
-  const handleOfferHover = (offerId) => {
-    setActiveOfferId(offerId);
-  };
-
-  const handleOfferBlur = () => {
-    setActiveOfferId(null);
-  };
-
+const OffersList = ({offers, offerCardType}) => {
   return (
     <>
       {offers.map((offer) =>
@@ -18,8 +10,6 @@ const OffersList = ({offers, offerCardType, setActiveOfferId}) => {
           key={offer.id}
           offer={offer}
           offerCardType={offerCardType}
-          onOfferBlur={handleOfferBlur}
-          onOfferHover={handleOfferHover}
         />
       )}
     </>

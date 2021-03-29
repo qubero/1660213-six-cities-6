@@ -1,10 +1,12 @@
 import React, {useEffect, useRef} from 'react';
+import {useSelector} from 'react-redux';
 import leaflet from 'leaflet';
 import {mapPropTypes} from '../../prop-types.prop';
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({city, offers, activeOfferId, isMainScreen = false}) => {
+const Map = ({city, offers, isMainScreen = false}) => {
+  const {activeOfferId} = useSelector((state) => state.OFFERS);
   const mapRef = useRef();
 
   const basicIcon = leaflet.icon({
@@ -45,7 +47,7 @@ const Map = ({city, offers, activeOfferId, isMainScreen = false}) => {
     const markers = [];
 
     offers.forEach((offer) => {
-      const icon = offer.id === activeOfferId ? activeIcon : basicIcon;
+      const icon = basicIcon;
 
       markers.push(
           leaflet
@@ -55,13 +57,36 @@ const Map = ({city, offers, activeOfferId, isMainScreen = false}) => {
             }, {icon})
             .addTo(mapRef.current)
       );
+    });
+
+    return () => {
+      markers.forEach((marker) => mapRef.current.removeLayer(marker));
+    };
+  }, [offers]);
+
+
+  useEffect(() => {
+    const markers = [];
+    const activeOffer = offers.find((offer) => offer.id === activeOfferId);
+
+    if (activeOffer) {
+      const icon = activeIcon;
+
+      markers.push(
+          leaflet
+            .marker({
+              lat: activeOffer.location.latitude,
+              lng: activeOffer.location.longitude
+            }, {icon})
+            .addTo(mapRef.current)
+      );
 
       const activeIconElement = document.querySelector(`img[src="img/pin-active.svg"]`);
 
       if (activeIconElement) {
         activeIconElement.style.zIndex = 1010;
       }
-    });
+    }
 
     return () => {
       markers.forEach((marker) => mapRef.current.removeLayer(marker));
