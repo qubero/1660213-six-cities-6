@@ -39,6 +39,7 @@ const MainScreen = () => {
             `page__main page__main--index`,
             {'page__main--index-empty': !offers.length}
         )}
+        data-testid="page-main"
       >
         <h1 className="visually-hidden">Cities</h1>
         <CityList />
