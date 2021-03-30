@@ -7,7 +7,11 @@ const OfferServicesList = ({services}) => {
       <h2 className="property__inside-title">What&apos;s inside</h2>
       <ul className="property__inside-list">
         {services.map((service) =>
-          <li key={service} className="property__inside-item">
+          <li
+            key={service}
+            className="property__inside-item"
+            data-testid={service}
+          >
             {service}
           </li>
         )}

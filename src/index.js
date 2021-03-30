@@ -8,6 +8,8 @@ import rootReducer from './store/root-reducer';
 import {requireAuthorization} from './store/action';
 import {checkAuth} from './store/api-actions';
 import {AuthorizationStatus} from './const';
+import {Router} from 'react-router-dom';
+import browserHistory from './browser-history';
 
 const api = createAPI(
     () => store.dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH))
@@ -27,7 +29,9 @@ store.dispatch(checkAuth());
 
 ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <Router history={browserHistory}>
+        <App />
+      </Router>
     </Provider>,
     document.querySelector(`#root`)
 );

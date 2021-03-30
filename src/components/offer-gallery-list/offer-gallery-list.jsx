@@ -5,10 +5,17 @@ const OfferGalleryList = ({images: allImages}) => {
   const images = allImages.slice(0, 6);
 
   return (
-    <div className="property__gallery-container container">
+    <div
+      className="property__gallery-container container"
+      data-testid="property-gallery"
+    >
       <div className="property__gallery">
         {images.map((image) =>
-          <div key={image} className="property__image-wrapper">
+          <div
+            key={image}
+            className="property__image-wrapper"
+            data-testid={image}
+          >
             <img className="property__image" src={image} alt="Photo studio" />
           </div>
         )}

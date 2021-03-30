@@ -13,7 +13,10 @@ const ReviewsList = ({id}) => {
 
   return (
     <section className="property__reviews reviews">
-      <h2 className="reviews__title">
+      <h2
+        className="reviews__title"
+        data-testid="reviews-title"
+      >
         Reviews · <span className="reviews__amount">{reviews.length}</span>
       </h2>
       <ul className="reviews__list">
