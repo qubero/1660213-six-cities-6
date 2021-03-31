@@ -1,36 +1,82 @@
 import React from 'react';
+import thunk from 'redux-thunk';
 import * as redux from 'react-redux';
 import configureStore from 'redux-mock-store';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
-import {Router} from 'react-router';
+import {Router, MemoryRouter, Route} from 'react-router';
 
-import {adaptOffersToClient} from '../../utils/utils';
+import {AuthorizationStatus} from '../../const';
 import MainScreen from '../screens/main-screen/main-screen';
 import AuthScreen from '../screens/auth-screen/auth-screen';
 import FavoritesScreen from '../screens/favorites-screen/favorites-screen';
 import NotFoundScreen from '../screens/not-found-screen/not-found-screen';
+import RoomScreen from '../screens/room-screen/room-screen';
 
-const mockStore = configureStore();
-const history = createMemoryHistory();
-/* eslint-disable */
+const api = {
+  get: jest.fn(() => Promise.resolve()),
+};
+
+const middleWare = [thunk.withExtraArgument(api)];
+const mockStore = configureStore(middleWare);
+const mockOffers = [
+  {
+    id: 1,
+    type: `room`,
+    title: `The house among olive`,
+    description: `Design interior in most sympathetic area!`,
+    price: 159,
+    rating: 4.4,
+    isFavorite: true,
+    isPremium: true,
+    image: `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg`,
+    galleryList: [
+      `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/8.jpg`,
+      `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/11.jpg`,
+      `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/10.jpg`,
+      `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/19.jpg`,
+      `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/9.jpg`,
+      `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/3.jpg`,
+      `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg`
+    ],
+    bedrooms: 1,
+    maxAdults: 1,
+    services: [`Laptop friendly workspace`],
+    city: {
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13
+      },
+      name: `Paris`
+    },
+    location: {latitude: 48.861610000000006, longitude: 2.340499, zoom: 16},
+    host: {
+      id: 25,
+      isPro: true,
+      name: `Angelina`,
+      avatar: `img/avatar-angelina.jpg`
+    }
+  }
+];
+
 const mockData = {
   USER: {
-    authorizationStatus: `AUTH`,
+    authorizationStatus: AuthorizationStatus.AUTH,
     userInfo: {
-      avatar_url: "https://assets.htmlacademy.ru/intensives/javascript-3/avatar/4.jpg",
-      email: "mail@gmail.com",
+      avatar: `https://assets.htmlacademy.ru/intensives/javascript-3/avatar/4.jpg`,
+      email: `mail@gmail.com`,
       id: 1,
-      is_pro: false,
-      name: "mail"
+      isPro: false,
+      name: `mail`
     }
   },
   OFFERS: {
-    offers: adaptOffersToClient([{"city":{"name":"Paris","location":{"latitude":48.85661,"longitude":2.351499,"zoom":13}},"preview_image":"https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg","images":["https://assets.htmlacademy.ru/intensives/javascript-3/hotel/8.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/11.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/10.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/19.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/9.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/3.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/6.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/16.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/5.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/7.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/20.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/12.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/18.jpg"],"title":"The house among olive ","is_favorite":true,"is_premium":false,"rating":4.4,"type":"room","bedrooms":1,"max_adults":1,"price":159,"goods":["Laptop friendly workspace"],"host":{"id":25,"name":"Angelina","is_pro":true,"avatar_url":"img/avatar-angelina.jpg"},"description":"Design interior in most sympathetic area! Complitely renovated, well-equipped, cosy studio in idyllic, over 100 years old wooden house. Calm street, fast connection to center and airport.","location":{"latitude":48.861610000000006,"longitude":2.340499,"zoom":16},"id":12}]),
+    offers: mockOffers,
     isOffersLoaded: true
   },
   OFFER: {
-    offer: adaptOffersToClient([{"city":{"name":"Paris","location":{"latitude":48.85661,"longitude":2.351499,"zoom":13}},"preview_image":"https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg","images":["https://assets.htmlacademy.ru/intensives/javascript-3/hotel/8.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/11.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/10.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/19.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/9.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/3.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/6.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/16.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/5.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/7.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/20.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/12.jpg","https://assets.htmlacademy.ru/intensives/javascript-3/hotel/18.jpg"],"title":"The house among olive ","is_favorite":true,"is_premium":false,"rating":4.4,"type":"room","bedrooms":1,"max_adults":1,"price":159,"goods":["Laptop friendly workspace"],"host":{"id":25,"name":"Angelina","is_pro":true,"avatar_url":"img/avatar-angelina.jpg"},"description":"Design interior in most sympathetic area! Complitely renovated, well-equipped, cosy studio in idyllic, over 100 years old wooden house. Calm street, fast connection to center and airport.","location":{"latitude":48.861610000000006,"longitude":2.340499,"zoom":16},"id":12}])[0],
+    offer: mockOffers[0],
     isOfferLoaded: true,
     reviews: [],
     nearby: [],
@@ -40,14 +86,17 @@ const mockData = {
     activeCity: `Paris`
   }
 };
-/* eslint-enable */
+
 describe(`Test routing`, () => {
   jest.spyOn(redux, `useSelector`);
   jest.spyOn(redux, `useDispatch`);
 
   it(`Render 'MainScreen' when user navigate to '/' url`, () => {
+    const history = createMemoryHistory();
+    const store = mockStore(mockData);
+
     render(
-        <redux.Provider store={mockStore(mockData)}>
+        <redux.Provider store={store}>
           <Router history={history}>
             <MainScreen />
           </Router>
@@ -64,40 +113,41 @@ describe(`Test routing`, () => {
     expect(screen.getByTestId(`map`)).toBeInTheDocument();
   });
 
-  // TODO: hook test
-  // it(`Render 'RoomScreen' when user navigate to '/offer/:id' url`, () => {
-  //   history.push(`/offer/1`);
+  it(`Render 'RoomScreen' when user navigate to '/offer/:id' url`, () => {
+    const store = mockStore(mockData);
 
-  //   render(
-  //       <redux.Provider store={mockStore(mockData)}>
-  //         <MemoryRouter history={history}>
-  //           <RoomScreen />
-  //         </MemoryRouter>
-  //       </redux.Provider>
-  //   );
+    render(
+        <redux.Provider store={store}>
+          <MemoryRouter initialEntries={[`/offer/1`]}>
+            <Route path="/offer/:id">
+              <RoomScreen />
+            </Route>
+          </MemoryRouter>
+        </redux.Provider>
+    );
 
-  //   expect(screen.getByTestId(`header`)).toBeInTheDocument();
-  //   expect(
-  //       screen.getByText(mockData.OFFERS.offers[0].description)
-  //   ).toBeInTheDocument();
-  //   expect(screen.getByTestId(`map`)).toBeInTheDocument();
-  //   expect(screen.getByTestId(`footer`)).toBeInTheDocument();
-  // });
+    expect(screen.getByTestId(`header`)).toBeInTheDocument();
+    expect(
+        screen.getByText(mockData.OFFERS.offers[0].description)
+    ).toBeInTheDocument();
+    expect(screen.getByTestId(`map`)).toBeInTheDocument();
+  });
 
   it(`Render 'AuthScreen' when user navigate to '/login' url`, () => {
-    const store = {
+    const store = mockStore({
       MAIN: {
         activeCity: ``
       },
       USER: {
-        authorizationStatus: `NO_AUTH`,
+        authorizationStatus: AuthorizationStatus.NO_AUTH,
         userInfo: {}
       }
-    };
+    });
+    const history = createMemoryHistory();
     history.push(`/login`);
 
     render(
-        <redux.Provider store={mockStore(store)}>
+        <redux.Provider store={store}>
           <Router history={history}>
             <AuthScreen />
           </Router>
@@ -112,10 +162,12 @@ describe(`Test routing`, () => {
   });
 
   it(`Render 'FavoritesScreen' when user navigate to '/favorites' url`, () => {
+    const store = mockStore(mockData);
+    const history = createMemoryHistory();
     history.push(`/favorites`);
 
     render(
-        <redux.Provider store={mockStore(mockData)}>
+        <redux.Provider store={store}>
           <Router history={history}>
             <FavoritesScreen />
           </Router>
@@ -124,16 +176,18 @@ describe(`Test routing`, () => {
 
     expect(screen.getByTestId(`header`)).toBeInTheDocument();
     expect(screen.getByText(`Saved listing`)).toBeInTheDocument();
-    expect(screen.getByTestId(`location-card-12`)).toBeInTheDocument();
+    expect(screen.getByTestId(`location-card-1`)).toBeInTheDocument();
     expect(screen.getByTestId(`location-link-Paris`)).toBeInTheDocument();
     expect(screen.getByTestId(`footer`)).toBeInTheDocument();
   });
 
   it(`Render 'NotFoundScreen' when user navigate to non-exist route`, () => {
+    const store = mockStore(mockData);
+    const history = createMemoryHistory();
     history.push(`/non-exist`);
 
     render(
-        <redux.Provider store={mockStore(mockData)}>
+        <redux.Provider store={store}>
           <Router history={history}>
             <NotFoundScreen />
           </Router>

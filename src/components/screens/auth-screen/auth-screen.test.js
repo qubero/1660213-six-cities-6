@@ -5,30 +5,28 @@ import * as redux from 'react-redux';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import AuthScreen from './auth-screen';
 
-const mockStore = configureStore();
-/* eslint-disable */
-const mockData = {
-  USER: {
-    authorizationStatus: `AUTH`,
-    userInfo: {
-      avatar_url: "https://assets.htmlacademy.ru/intensives/javascript-3/avatar/4.jpg",
-      email: "mail@gmail.com",
-      id: 1,
-      is_pro: false,
-      name: "mail"
-    }
-  }
-};
-/* eslint-enable */
+const mockStore = configureStore({});
+
 it(`Render 'AuthScreen' when user navigate to '/login' url`, () => {
+  const store = mockStore({
+    USER: {
+      authorizationStatus: `AUTH`,
+      userInfo: {
+        avatar: `https://assets.htmlacademy.ru/intensives/javascript-3/avatar/4.jpg`,
+        email: `mail@gmail.com`,
+        id: 1,
+        isPro: false,
+        name: `mail`
+      }
+    }
+  });
   const history = createMemoryHistory();
   history.push(`/login`);
 
   render(
-      <redux.Provider store={mockStore(mockData)}>
+      <redux.Provider store={store}>
         <Router history={history}>
           <AuthScreen />
         </Router>

@@ -9,32 +9,20 @@ import userEvent from '@testing-library/user-event';
 import {SortType} from '../../const';
 import OfferSort from './offer-sort';
 
-const mockStore = configureStore();
-/* eslint-disable */
-const mockData = {
-  USER: {
-    authorizationStatus: `AUTH`,
-    userInfo: {
-      avatar_url: "https://assets.htmlacademy.ru/intensives/javascript-3/avatar/4.jpg",
-      email: "mail@gmail.com",
-      id: 1,
-      is_pro: false,
-      name: "mail"
-    }
-  },
-  MAIN: {
-    activeSort: `Popular`
-  }
-};
-/* eslint-enable */
+const mockStore = configureStore({});
 
 it(`Render 'OfferSort'`, () => {
   jest.spyOn(redux, `useDispatch`);
   jest.spyOn(redux, `useSelector`);
+
+  const sortTypes = Object.values(SortType);
   const history = createMemoryHistory();
+  const store = mockStore({
+    MAIN: {activeSort: sortTypes[0]}
+  });
 
   render(
-      <redux.Provider store={mockStore(mockData)}>
+      <redux.Provider store={store}>
         <Router history={history}>
           <OfferSort />
         </Router>
@@ -45,13 +33,18 @@ it(`Render 'OfferSort'`, () => {
 
   expect(screen.getByText(`Sort by`)).toBeInTheDocument();
   expect(sortSpan).toBeInTheDocument();
-  expect(sortSpan).toContainHTML(`Popular`);
+  expect(sortSpan).toContainHTML(sortTypes[0]);
   userEvent.click(sortSpan);
   expect(
       screen.getByTestId(`places-options`)
   ).toHaveClass(`places__options--opened`);
 
-  for (const item of Object.values(SortType)) {
+  for (const item of sortTypes) {
     expect(screen.getByTestId(item)).toBeInTheDocument();
   }
+
+  userEvent.click(screen.getByTestId(sortTypes[1]));
+  expect(
+      screen.getByTestId(`places-options`)
+  ).not.toHaveClass(`places__options--opened`);
 });

@@ -4,37 +4,48 @@ import configureStore from 'redux-mock-store';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
 import {Router} from 'react-router';
-
-import {adaptReviewsToClient} from '../../utils/utils';
+import {AuthorizationStatus} from '../../const';
 import ReviewsList from './reviews-list';
 
-const mockStore = configureStore();
-/* eslint-disable */
-const mockData = {
-  USER: {
-    authorizationStatus: `AUTH`,
-  },
-  OFFER: {
-    reviews: adaptReviewsToClient([{"id":1,"user":{"id":18,"is_pro":true,"name":"Sophie","avatar_url":"https://assets.htmlacademy.ru/intensives/javascript-3/avatar/9.jpg"},"rating":2,"comment":"Beautiful space, fantastic location and atmosphere, really a wonderful place to spend a few days. Will be back.","date":"2021-03-07T08:04:28.647Z"}]),
+const mockStore = configureStore({});
+const mockReviews = [
+  {
+    id: 1,
+    comment: `Beautiful space, fantastic location and atmosphere.`,
+    date: `2021-03-07T08:04:28.647Z`,
+    rating: 2,
+    user: {
+      id: 18,
+      isPro: true,
+      name: `Sophie`,
+      avatar: `https://assets.htmlacademy.ru/intensives/javascript-3/avatar/9.jpg`
+    }
   }
-};
-/* eslint-enable */
+];
+
 it(`Render 'ReviewsList'`, () => {
   jest.spyOn(redux, `useSelector`);
   jest.spyOn(redux, `useDispatch`);
+
   const history = createMemoryHistory();
+  const store = mockStore({
+    USER: {authorizationStatus: AuthorizationStatus.AUTH},
+    OFFER: {reviews: mockReviews}
+  });
 
   render(
-      <redux.Provider store={mockStore(mockData)}>
+      <redux.Provider store={store}>
         <Router history={history}>
           <ReviewsList id={`1`} />
         </Router>
       </redux.Provider>
   );
 
-  expect(screen.getByTestId(`reviews-title`)).toContainHTML(`<h2 class="reviews__title" data-testid="reviews-title">Reviews · <span class="reviews__amount">1</span></h2>`);
+  expect(
+      screen.getByTestId(`reviews-title`)
+  ).toHaveTextContent(`Reviews · ${mockReviews.length}`);
 
-  for (const item of mockData.OFFER.reviews) {
+  for (const item of mockReviews) {
     expect(screen.getByTestId(`reviews-item-${item.id}`)).toBeInTheDocument();
   }
 
