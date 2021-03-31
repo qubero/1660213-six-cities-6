@@ -29,16 +29,20 @@ const OfferSort = () => {
         className="places__sorting-type"
         tabIndex="0"
         onClick={handleSortClick}
+        data-testid="sort-span"
       >
         {activeSort}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className={classNames(
-          `places__options places__options--custom`,
-          {'places__options--opened': isOpened}
-      )}>
+      <ul
+        className={classNames(
+            `places__options places__options--custom`,
+            {'places__options--opened': isOpened}
+        )}
+        data-testid="places-options"
+      >
         {Object.values(SortType).map((sortType) =>
           <li
             key={sortType}
@@ -48,6 +52,7 @@ const OfferSort = () => {
                 {'places__option--active': sortType === activeSort}
             )}
             onClick={handleSortChange}
+            data-testid={sortType}
           >{sortType}</li>
         )}
       </ul>

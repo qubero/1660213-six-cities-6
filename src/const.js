@@ -18,7 +18,8 @@ export const APIRoutes = {
   LOGOUT: `/logout`,
   OFFERS: `/hotels`,
   REVIEWS: `/comments`,
-  FAVORITE: `/favorite`
+  FAVORITE: `/favorite`,
+  NEARBY: `nearby`
 };
 
 export const AuthorizationStatus = {

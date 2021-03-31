@@ -70,12 +70,15 @@ const RoomScreen = () => {
         <Header />
 
         <main className="page__main page__main--property">
-          <section className="property">
+          <section className="property" data-testid="property-section">
             <OfferGalleryList images={galleryList} />
-            <div className="property__container container">
+            <div
+              className="property__container container"
+              data-testid="property-container"
+            >
               <div className="property__wrapper">
                 {isPremium &&
-                  <div className="property__mark">
+                  <div className="property__mark" data-testid="property-mark">
                     <span>Premium</span>
                   </div>
                 }
@@ -84,13 +87,19 @@ const RoomScreen = () => {
                     {title}
                   </h1>
                   <button
-                    className={classNames(`property__bookmark-button button`, {
-                      'property__bookmark-button--active': isFavorite
-                    })}
+                    className={classNames(
+                        `property__bookmark-button button`,
+                        {'property__bookmark-button--active': isFavorite}
+                    )}
                     type="button"
                     onClick={() => handleFavoriteClick(id, !isFavorite)}
+                    data-testid="property-bookmark-button"
                   >
-                    <svg className="property__bookmark-icon" width="31" height="33">
+                    <svg
+                      className="property__bookmark-icon"
+                      width="31"
+                      height="33"
+                    >
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
                     <span className="visually-hidden">To bookmarks</span>

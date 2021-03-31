@@ -39,6 +39,7 @@ const OfferCard = ({
       onBlur={() => handleActiveOfferId(null)}
       onMouseLeave={() => handleActiveOfferId(null)}
       className={`place-card ${offerCardType}`}
+      data-testid={`location-card-${id}`}
     >
       {isPremium &&
         <div className="place-card__mark">
@@ -62,6 +63,7 @@ const OfferCard = ({
         className={classNames(`place-card__info`, {
           'favorites__card-info': offerCardType === OfferCardType.FAVORITES
         })}
+        data-testid={`offer-card-type-${id}`}
       >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
@@ -74,6 +76,7 @@ const OfferCard = ({
             })}
             type="button"
             onClick={() => handleFavoriteClick(id, !isFavorite)}
+            data-testid={`offer-card-bookmark-button`}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

@@ -8,7 +8,7 @@ const Header = () => {
   const isAuth = authorizationStatus === AuthorizationStatus.AUTH;
 
   return (
-    <header className="header">
+    <header className="header" data-testid="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
@@ -22,6 +22,7 @@ const Header = () => {
                 alt="6 cities logo"
                 width="81"
                 height="41"
+                data-testid="header-logo"
               />
             </Link>
           </div>
@@ -32,10 +33,15 @@ const Header = () => {
                   className="header__nav-link header__nav-link--profile"
                   to={isAuth ? AppRoutes.FAVORITES : AppRoutes.LOGIN}
                 >
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
+                  <div
+                    className="header__avatar-wrapper user__avatar-wrapper"
+                    data-testid="user-avatar"
+                  >
                   </div>
                   {isAuth
-                    ? <span className="header__user-name user__name">
+                    ? <span
+                      className="header__user-name user__name"
+                    >
                       {userInfo.email}
                     </span>
                     : <span className="header__login">Sign in</span>

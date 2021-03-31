@@ -32,7 +32,7 @@ export const fetchOffer = (id) => (dispatch, _getState, api) => (
 );
 
 export const fetchNearbyList = (id) => (dispatch, _getState, api) => (
-  api.get(`${APIRoutes.OFFERS}/${id}/nearby`)
+  api.get(`${APIRoutes.OFFERS}/${id}/${APIRoutes.NEARBY}`)
     .then(({data}) => dispatch(loadNearby(data)))
 );
 

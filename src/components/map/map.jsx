@@ -102,6 +102,7 @@ const Map = ({city, offers, isMainScreen = false}) => {
           : {height: `579px`}
       }
       id="map"
+      data-testid="map"
     />
   );
 };

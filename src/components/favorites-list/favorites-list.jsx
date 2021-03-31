@@ -16,14 +16,22 @@ const FavoritesList = ({offers}) => {
           <li key={key} className="favorites__locations-items">
             <div className="favorites__locations locations locations--current">
               <div className="locations__item">
-                <Link className="locations__item-link" to="#">
+                <Link
+                  className="locations__item-link"
+                  to="#"
+                  data-testid={`location-link-${key}`}
+                >
                   <span>{key}</span>
                 </Link>
               </div>
             </div>
             <div className="favorites__places">
               {value.map((offer) =>
-                <OfferCard key={offer.id} offer={offer} offerCardType={OfferCardType.FAVORITES} />
+                <OfferCard
+                  key={offer.id}
+                  offer={offer}
+                  offerCardType={OfferCardType.FAVORITES}
+                />
               )}
             </div>
           </li>

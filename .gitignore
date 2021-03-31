@@ -12,6 +12,8 @@ Thumbs.db
 *.log*
 node_modules/
 
+coverage/
+
 # Собранные файлы 
 public/bundle.js
 public/bundle.js.map
