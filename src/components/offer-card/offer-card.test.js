@@ -1,13 +1,20 @@
 import React from 'react';
+import thunk from 'redux-thunk';
 import * as redux from 'react-redux';
 import configureStore from 'redux-mock-store';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
 import {Router} from 'react-router';
+import userEvent from '@testing-library/user-event';
 import {AuthorizationStatus} from '../../const';
-import OffersListProxy from './offers-list-proxy';
+import OfferCard from './offer-card';
 
-const mockStore = configureStore({});
+const api = {
+  post: jest.fn(() => Promise.resolve()),
+};
+
+const middleWare = [thunk.withExtraArgument(api)];
+const mockStore = configureStore(middleWare);
 const mockOffers = [
   {
     id: 1,
@@ -17,7 +24,7 @@ const mockOffers = [
     price: 159,
     rating: 4.4,
     isFavorite: true,
-    isPremium: false,
+    isPremium: true,
     image: `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg`,
     galleryList: [
       `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/8.jpg`,
@@ -49,7 +56,7 @@ const mockOffers = [
   }
 ];
 
-it(`Render 'OffersListProxy'`, () => {
+it(`Render 'OfferCard'`, () => {
   jest.spyOn(redux, `useSelector`);
   jest.spyOn(redux, `useDispatch`);
 
@@ -62,18 +69,24 @@ it(`Render 'OffersListProxy'`, () => {
   render(
       <redux.Provider store={store}>
         <Router history={history}>
-          <OffersListProxy
-            className={`near-places__list`}
-            offers={mockOffers}
+          <OfferCard
+            offer={mockOffers[0]}
             offerCardType={`favorites__card`}
           />
         </Router>
       </redux.Provider>
   );
 
-  expect(screen.getByTestId(`places-list`)).toHaveClass(`near-places__list`);
+  const bookmarkBtn = screen.getByTestId(`offer-card-bookmark-button`);
 
-  for (const item of mockOffers) {
-    expect(screen.getByTestId(`location-card-${item.id}`)).toBeInTheDocument();
-  }
+  expect(screen.getByText(`Premium`)).toBeInTheDocument();
+  expect(
+      screen.getByAltText(`Place image`)
+  ).toHaveAttribute(`src`, mockOffers[0].image);
+  expect(
+      screen.getByTestId(`offer-card-type-${mockOffers[0].id}`)
+  ).toHaveClass(`favorites__card-info`);
+  expect(screen.getByText(`€${mockOffers[0].price}`)).toBeInTheDocument();
+  userEvent.click(bookmarkBtn);
+  expect(bookmarkBtn).not.toHaveClass(`place-card__bookmark-button--active`);
 });

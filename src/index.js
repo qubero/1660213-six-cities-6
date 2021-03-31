@@ -11,7 +11,7 @@ import {AuthorizationStatus} from './const';
 import {Router} from 'react-router-dom';
 import browserHistory from './browser-history';
 
-const api = createAPI(
+export const api = createAPI(
     () => store.dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH))
 );
 

@@ -2,11 +2,22 @@ import React from 'react';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
 import {Router} from 'react-router';
-
-import {adaptReviewsToClient} from '../../utils/utils';
 import ReviewCard from './review-card';
-// eslint-disable-next-line
-const mockReviews = adaptReviewsToClient([{"id":1,"user":{"id":18,"is_pro":true,"name":"Sophie","avatar_url":"https://assets.htmlacademy.ru/intensives/javascript-3/avatar/9.jpg"},"rating":2,"comment":"Beautiful space, fantastic location and atmosphere, really a wonderful place to spend a few days. Will be back.","date":"2021-03-07T08:04:28.647Z"}]);
+
+const mockReviews = [
+  {
+    id: 1,
+    comment: `Beautiful space, fantastic location and atmosphere.`,
+    date: `2021-03-07T08:04:28.647Z`,
+    rating: 2,
+    user: {
+      id: 18,
+      isPro: true,
+      name: `Sophie`,
+      avatar: `https://assets.htmlacademy.ru/intensives/javascript-3/avatar/9.jpg`
+    }
+  }
+];
 
 it(`Render 'ReviewCard'`, () => {
   const history = createMemoryHistory();
