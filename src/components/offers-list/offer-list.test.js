@@ -56,7 +56,8 @@ it(`Render 'OffersList'`, () => {
   const history = createMemoryHistory();
   const store = mockStore({
     MAIN: {activeCity: `Paris`},
-    USER: {authorizationStatus: AuthorizationStatus.AUTH}
+    USER: {authorizationStatus: AuthorizationStatus.AUTH},
+    OFFERS: {offers: mockOffers}
   });
 
   render(

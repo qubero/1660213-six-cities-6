@@ -1,13 +1,18 @@
 import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import classNames from 'classnames';
 
-import {fetchOffer, fetchNearbyList, fetchOfferReviews} from '../../../store/api-actions';
+import {
+  fetchOffer,
+  fetchNearbyList,
+  fetchOfferReviews
+} from '../../../store/api-actions';
 import {clearOffer} from '../../../store/action';
-import {getRatingPercentage, getFirstLetterUppercase} from '../../../utils/utils';
+import {
+  getRatingPercentage,
+  getFirstLetterUppercase
+} from '../../../utils/utils';
 import {FetchStatus} from '../../../const';
-import {useIsFavorite} from '../../../hooks/use-is-favorite';
 
 import Header from '../../header/header';
 import ReviewsList from '../../reviews-list/reviews-list';
@@ -18,6 +23,7 @@ import OfferGalleryList from '../../offer-gallery-list/offer-gallery-list';
 import OfferServicesList from '../../offer-services-list.jsx/offer-services-list';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import BookmarkButton from '../../favorite-button/favorite-button';
 
 const RoomScreen = () => {
   const {id} = useParams();
@@ -26,8 +32,6 @@ const RoomScreen = () => {
   const offer = useSelector(({OFFER}) => OFFER.offer);
   const nearby = useSelector(({OFFER}) => OFFER.nearby);
   const fetchStatus = useSelector(({OFFER}) => OFFER.fetchStatus);
-
-  const [isFavorite, handleFavoriteClick] = useIsFavorite(offer.isFavorite);
 
   useEffect(() => {
     dispatch(fetchOffer(id));
@@ -86,24 +90,7 @@ const RoomScreen = () => {
                   <h1 className="property__name">
                     {title}
                   </h1>
-                  <button
-                    className={classNames(
-                        `property__bookmark-button button`,
-                        {'property__bookmark-button--active': isFavorite}
-                    )}
-                    type="button"
-                    onClick={() => handleFavoriteClick(id, !isFavorite)}
-                    data-testid="property-bookmark-button"
-                  >
-                    <svg
-                      className="property__bookmark-icon"
-                      width="31"
-                      height="33"
-                    >
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>
+                  <BookmarkButton id={id} offerIsFavorite={offer.isFavorite}/>
                 </div>
                 <div className="property__rating rating">
                   <div className="property__stars rating__stars">

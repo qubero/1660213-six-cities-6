@@ -11,7 +11,8 @@ export const ActionType = {
   LOAD_REVIEWS: `offers/loadReviews`,
   CLEAR_OFFER: `offers/clearOffer`,
   CHANGE_FETCH_STATUS: `fetch/changeStatus`,
-  SET_ACTIVE_OFFER: `offers/setActiveOffer`
+  SET_ACTIVE_OFFER: `offers/setActiveOffer`,
+  UPDATE_OFFERS: `offers/updateOffers`,
 };
 
 export const changeCity = createAction(ActionType.CHANGE_CITY, (city) => {
@@ -73,5 +74,11 @@ export const clearOffer = createAction(ActionType.CLEAR_OFFER);
 export const changeFetchStatus = createAction(ActionType.CHANGE_FETCH_STATUS, (status) => {
   return {
     payload: status
+  };
+});
+
+export const updateOffers = createAction(ActionType.UPDATE_OFFERS, (offers) => {
+  return {
+    payload: offers
   };
 });

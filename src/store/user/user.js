@@ -1,6 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {requireAuthorization, setUserInfo} from '../action';
 import {AuthorizationStatus} from '../../const';
+import {adaptUserInfoToClient} from '../../utils/utils';
 
 const initialState = {
   authorizationStatus: AuthorizationStatus.NO_AUTH,
@@ -12,7 +13,7 @@ const user = createReducer(initialState, (builder) => {
     state.authorizationStatus = action.payload;
   });
   builder.addCase(setUserInfo, (state, action) => {
-    state.userInfo = action.payload;
+    state.userInfo = adaptUserInfoToClient(action.payload);
   });
 });
 

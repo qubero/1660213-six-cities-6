@@ -1,6 +1,7 @@
 import {user} from './user';
 import {AuthorizationStatus} from '../../const';
 import {requireAuthorization, setUserInfo} from '../action';
+import {adaptUserInfoToClient} from '../../utils/utils';
 
 /* eslint-disable */
 const mockUserInfo = {
@@ -35,7 +36,7 @@ describe(`Reducers work correctly`, () => {
     };
     expect(user(state, setUserInfo(mockUserInfo)))
       .toEqual({
-        userInfo: mockUserInfo
+        userInfo: adaptUserInfoToClient(mockUserInfo)
       });
   });
 });

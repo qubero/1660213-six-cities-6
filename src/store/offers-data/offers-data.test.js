@@ -1,5 +1,5 @@
 import {offersData} from './offers-data';
-import {setActiveOffer, loadOffers} from '../action';
+import {setActiveOffer, loadOffers, updateOffers} from '../action';
 import {adaptOffersToClient} from '../../utils/utils';
 
 // eslint-disable-next-line
@@ -24,6 +24,17 @@ describe(`Reducers work correctly`, () => {
         offers: adaptOffersToClient(mockOffers),
         isOffersLoaded: true
       });
+  });
+  it(`Reducer should update offers`, () => {
+    const state = {
+      offers: adaptOffersToClient(mockOffers)
+    };
+    expect(offersData(
+        state,
+        updateOffers(adaptOffersToClient(mockOffers))
+    )).toEqual({
+      offers: state.offers,
+    });
   });
   it(`Reducer should change active offer id`, () => {
     const state = {

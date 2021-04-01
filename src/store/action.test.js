@@ -10,7 +10,8 @@ import {
   setUserInfo,
   setActiveOffer,
   changeFetchStatus,
-  clearOffer
+  clearOffer,
+  updateOffers
 } from './action';
 
 /* eslint-disable */
@@ -108,5 +109,12 @@ describe(`Action creators work correctly`, () => {
       type: ActionType.CLEAR_OFFER
     };
     expect(clearOffer()).toEqual(expectedAction);
+  });
+  it(`Action creator for offers update returns correct action`, () => {
+    const expectedAction = {
+      type: ActionType.UPDATE_OFFERS,
+      payload: mockOffers
+    };
+    expect(updateOffers(mockOffers)).toEqual(expectedAction);
   });
 });

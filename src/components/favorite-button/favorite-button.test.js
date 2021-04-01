@@ -1,13 +1,20 @@
 import React from 'react';
+import thunk from 'redux-thunk';
 import * as redux from 'react-redux';
 import configureStore from 'redux-mock-store';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
 import {Router} from 'react-router';
+import userEvent from '@testing-library/user-event';
 import {AuthorizationStatus} from '../../const';
-import FavoritesList from './favorites-list';
+import BookmarkButton from './favorite-button';
 
-const mockStore = configureStore({});
+const api = {
+  post: jest.fn(() => Promise.resolve()),
+};
+
+const middleWare = [thunk.withExtraArgument(api)];
+const mockStore = configureStore(middleWare);
 const mockOffers = [
   {
     id: 1,
@@ -17,7 +24,7 @@ const mockOffers = [
     price: 159,
     rating: 4.4,
     isFavorite: true,
-    isPremium: false,
+    isPremium: true,
     image: `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/13.jpg`,
     galleryList: [
       `https://assets.htmlacademy.ru/intensives/javascript-3/hotel/8.jpg`,
@@ -49,12 +56,13 @@ const mockOffers = [
   }
 ];
 
-it(`Render 'FavoritesList'`, () => {
-  jest.spyOn(redux, `useDispatch`);
+it(`Render 'FavoriteButton'`, () => {
   jest.spyOn(redux, `useSelector`);
+  jest.spyOn(redux, `useDispatch`);
 
   const history = createMemoryHistory();
   const store = mockStore({
+    MAIN: {activeCity: `Paris`},
     USER: {authorizationStatus: AuthorizationStatus.AUTH},
     OFFERS: {offers: mockOffers}
   });
@@ -62,12 +70,18 @@ it(`Render 'FavoritesList'`, () => {
   render(
       <redux.Provider store={store}>
         <Router history={history}>
-          <FavoritesList offers={mockOffers} />
+          <BookmarkButton
+            id={`1`}
+            offerIsFavorite={true}
+          />
         </Router>
       </redux.Provider>
   );
 
-  expect(screen.getByText(`Saved listing`)).toBeInTheDocument();
-  expect(screen.getByTestId(`location-card-1`)).toBeInTheDocument();
-  expect(screen.getByTestId(`location-link-Paris`)).toBeInTheDocument();
+  const bookmarkBtn = screen.getByTestId(`property-bookmark-button`);
+
+  expect(bookmarkBtn).toBeInTheDocument();
+  expect(bookmarkBtn).toHaveClass(`property__bookmark-button--active`);
+  userEvent.click(bookmarkBtn);
+  expect(bookmarkBtn).not.toHaveClass(`property__bookmark-button--active`);
 });

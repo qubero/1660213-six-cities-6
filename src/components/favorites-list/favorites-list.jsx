@@ -1,12 +1,22 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import OfferCard from '../offer-card/offer-card';
-import {OfferCardType} from '../../const';
+import {OfferCardType, AppRoutes} from '../../const';
 import {groupByKey} from '../../utils/utils';
+import {changeCity} from '../../store/action';
 import {offersListPropTypes} from '../../prop-types.prop';
 
 const FavoritesList = ({offers}) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const offersByCity = groupByKey(offers, `city.name`);
+
+  const handleCityClick = (evt) => {
+    evt.preventDefault();
+    dispatch(changeCity(evt.target.innerText));
+    history.push(AppRoutes.ROOT);
+  };
 
   return (
     <section className="favorites">
@@ -16,13 +26,13 @@ const FavoritesList = ({offers}) => {
           <li key={key} className="favorites__locations-items">
             <div className="favorites__locations locations locations--current">
               <div className="locations__item">
-                <Link
+                <a
                   className="locations__item-link"
-                  to="#"
+                  onClick={handleCityClick}
                   data-testid={`location-link-${key}`}
                 >
-                  <span>{key}</span>
-                </Link>
+                  {key}
+                </a>
               </div>
             </div>
             <div className="favorites__places">

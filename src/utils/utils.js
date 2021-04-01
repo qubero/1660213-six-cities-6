@@ -5,7 +5,6 @@ export const humanizeDate = (date, format) => {
   return dayjs(date).format(format);
 };
 
-// TODO: key as prop (groupByKey 2nd arg)
 export const groupByKey = (items) => items.reduce(
     (acc, item) => {
       const curKey = item.city.name;
@@ -97,4 +96,14 @@ export const adaptReviewToClient = (review) => (
 
 export const adaptReviewsToClient = (reviews) => (
   reviews.map((review) => adaptReviewToClient(review))
+);
+
+export const adaptUserInfoToClient = (user) => (
+  {
+    id: user.id,
+    isPro: user.is_pro,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar_url
+  }
 );

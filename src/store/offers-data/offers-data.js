@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {loadOffers, setActiveOffer} from '../action';
+import {loadOffers, setActiveOffer, updateOffers} from '../action';
 import {adaptOffersToClient} from '../../utils/utils';
 
 const initialState = {
@@ -15,6 +15,9 @@ const offersData = createReducer(initialState, (builder) => {
   });
   builder.addCase(setActiveOffer, (state, action) => {
     state.activeOfferId = action.payload;
+  });
+  builder.addCase(updateOffers, (state, action) => {
+    state.offers = action.payload;
   });
 });
 

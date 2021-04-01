@@ -35,6 +35,13 @@ const Header = () => {
                 >
                   <div
                     className="header__avatar-wrapper user__avatar-wrapper"
+                    {...(
+                      userInfo.avatar && {
+                        style: {
+                          backgroundImage: `url('${userInfo.avatar}')`
+                        }
+                      }
+                    )}
                     data-testid="user-avatar"
                   >
                   </div>
