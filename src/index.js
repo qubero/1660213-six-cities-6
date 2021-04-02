@@ -25,9 +25,10 @@ const store = configureStore({
     })
 });
 
-store.dispatch(checkAuth());
+(async () => {
+  await store.dispatch(checkAuth());
 
-ReactDOM.render(
+  ReactDOM.render(
     <Provider store={store}>
       <Router history={browserHistory}>
         <App />
@@ -35,3 +36,4 @@ ReactDOM.render(
     </Provider>,
     document.querySelector(`#root`)
 );
+})();
