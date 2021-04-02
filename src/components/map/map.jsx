@@ -4,6 +4,7 @@ import leaflet from 'leaflet';
 import {mapPropTypes} from '../../prop-types.prop';
 
 import "leaflet/dist/leaflet.css";
+import "./map.css";
 
 const Map = ({city, offers, isMainScreen = false}) => {
   const {activeOfferId} = useSelector((state) => state.OFFERS);
@@ -16,7 +17,8 @@ const Map = ({city, offers, isMainScreen = false}) => {
 
   const activeIcon = leaflet.icon({
     iconUrl: `img/pin-active.svg`,
-    iconSize: [27, 39]
+    iconSize: [27, 39],
+    className: `pin-active`
   });
 
   const {location} = city;
@@ -80,12 +82,6 @@ const Map = ({city, offers, isMainScreen = false}) => {
             }, {icon})
             .addTo(mapRef.current)
       );
-
-      const activeIconElement = document.querySelector(`img[src="img/pin-active.svg"]`);
-
-      if (activeIconElement) {
-        activeIconElement.style.zIndex = 1010;
-      }
     }
 
     return () => {
