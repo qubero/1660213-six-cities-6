@@ -109,7 +109,9 @@ const mockDataAllTrue = {
   },
   OFFERS: {
     offers: mockOffers,
-    isOffersLoaded: true
+    isOffersLoaded: true,
+    favoriteOffers: mockOffers,
+    isFavoriteOffersLoaded: true
   },
   OFFER: {
     offer: mockOffers[0],
@@ -120,6 +122,10 @@ const mockDataAllTrue = {
   },
   MAIN: {
     activeCity: `Paris`
+  },
+  FETCH: {
+    fetchStatus: `Done`,
+    formFetchStatus: `Done`
   }
 };
 
@@ -136,7 +142,9 @@ const mockDataAllFalse = {
   },
   OFFERS: {
     offers: mockOffers,
-    isOffersLoaded: true
+    isOffersLoaded: true,
+    favoriteOffers: mockOffers,
+    isFavoriteOffersLoaded: true
   },
   OFFER: {
     offer: mockOffers[1],
@@ -147,6 +155,10 @@ const mockDataAllFalse = {
   },
   MAIN: {
     activeCity: `Paris`
+  },
+  FETCH: {
+    fetchStatus: `Done`,
+    formFetchStatus: `Done`
   }
 };
 

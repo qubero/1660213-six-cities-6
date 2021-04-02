@@ -1,13 +1,19 @@
 import React from 'react';
 import {Router} from 'react-router';
 import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import * as redux from 'react-redux';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
 import {AuthorizationStatus} from '../../../const';
 import FavoritesScreen from './favorites-screen';
 
-const mockStore = configureStore({});
+const api = {
+  get: jest.fn(() => Promise.resolve()),
+};
+
+const middleWare = [thunk.withExtraArgument(api)];
+const mockStore = configureStore(middleWare);
 const mockOffers = [
   {
     id: 1,
@@ -51,6 +57,7 @@ const mockOffers = [
 
 describe(`Should render 'FavoritesScreen' correctly with filled or empty favorite list `, () => {
   jest.spyOn(redux, `useSelector`);
+  jest.spyOn(redux, `useDispatch`);
 
   it(`Render 'FavoritesScreen' with filled favorite list`, () => {
     const store = mockStore({
@@ -66,7 +73,13 @@ describe(`Should render 'FavoritesScreen' correctly with filled or empty favorit
       },
       OFFERS: {
         offers: mockOffers,
-        isOffersLoaded: true
+        isOffersLoaded: true,
+        favoriteOffers: mockOffers,
+        isFavoriteOffersLoaded: true
+      },
+      FETCH: {
+        fetchStatus: `Done`,
+        formFetchStatus: `Done`
       }
     });
     const history = createMemoryHistory();
@@ -99,7 +112,14 @@ describe(`Should render 'FavoritesScreen' correctly with filled or empty favorit
         }
       },
       OFFERS: {
-        offers: []
+        offers: [],
+        isOffersLoaded: true,
+        favoriteOffers: [],
+        isFavoriteOffersLoaded: true
+      },
+      FETCH: {
+        fetchStatus: `Done`,
+        formFetchStatus: `Done`
       }
     });
     const history = createMemoryHistory();

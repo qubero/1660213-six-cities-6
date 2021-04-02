@@ -6,9 +6,14 @@ import {getReviews} from '../../store/offer-data/selectors';
 import ReviewCard from '../review-card/review-card';
 import ReviewForm from '../review-form/review-form';
 
+const sortByDate = (itemA, itemB) => (
+  new Date(itemB.date) - new Date(itemA.date)
+);
+
 const ReviewsList = ({id}) => {
   const isAuth = useSelector(getIsAuth);
   const reviews = useSelector(getReviews);
+  const currentReviews = reviews.slice().sort(sortByDate).slice(0, 9);
 
   return (
     <section className="property__reviews reviews">
@@ -19,7 +24,7 @@ const ReviewsList = ({id}) => {
         Reviews · <span className="reviews__amount">{reviews.length}</span>
       </h2>
       <ul className="reviews__list">
-        {reviews.map((review) =>
+        {currentReviews.map((review) =>
           <ReviewCard key={review.id} review={review} />
         )}
       </ul>

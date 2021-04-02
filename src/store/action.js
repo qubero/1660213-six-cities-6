@@ -5,12 +5,14 @@ export const ActionType = {
   CHANGE_SORT: `sort/changeSort`,
   REQUIRE_AUTHORIZATION: `user/requireAuthorization`,
   SET_USER_INFO: `user/setUserInfo`,
+  LOAD_FAVORITE_OFFERS: `offers/loadFavoriteOffers`,
   LOAD_OFFERS: `offers/loadOffers`,
   LOAD_OFFER: `offers/loadOffer`,
   LOAD_NEARBY: `offers/loadNearby`,
   LOAD_REVIEWS: `offers/loadReviews`,
   CLEAR_OFFER: `offers/clearOffer`,
   CHANGE_FETCH_STATUS: `fetch/changeStatus`,
+  CHANGE_FORM_FETCH_STATUS: `fetch/changeFormStatus`,
   SET_ACTIVE_OFFER: `offers/setActiveOffer`,
   UPDATE_OFFERS: `offers/updateOffers`,
 };
@@ -36,6 +38,12 @@ export const requireAuthorization = createAction(ActionType.REQUIRE_AUTHORIZATIO
 export const setUserInfo = createAction(ActionType.SET_USER_INFO, (info) => {
   return {
     payload: info
+  };
+});
+
+export const loadFavoriteOffers = createAction(ActionType.LOAD_FAVORITE_OFFERS, (offers) => {
+  return {
+    payload: offers
   };
 });
 
@@ -77,8 +85,14 @@ export const changeFetchStatus = createAction(ActionType.CHANGE_FETCH_STATUS, (s
   };
 });
 
-export const updateOffers = createAction(ActionType.UPDATE_OFFERS, (offers) => {
+export const changeFormFetchStatus = createAction(ActionType.CHANGE_FORM_FETCH_STATUS, (status) => {
   return {
-    payload: offers
+    payload: status
+  };
+});
+
+export const updateOffers = createAction(ActionType.UPDATE_OFFERS, (offer) => {
+  return {
+    payload: offer
   };
 });

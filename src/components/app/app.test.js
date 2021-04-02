@@ -71,9 +71,15 @@ const mockData = {
       name: `mail`
     }
   },
+  FETCH: {
+    fetchStatus: `Done`,
+    formFetchStatus: `Done`,
+  },
   OFFERS: {
     offers: mockOffers,
-    isOffersLoaded: true
+    isOffersLoaded: true,
+    favoriteOffers: mockOffers,
+    isFavoriteOffersLoaded: true
   },
   OFFER: {
     offer: mockOffers[0],

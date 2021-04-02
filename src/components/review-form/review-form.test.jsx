@@ -11,9 +11,15 @@ const mockStore = configureStore({});
 
 it(`Render 'ReviewForm'`, () => {
   const history = createMemoryHistory();
+  const store = mockStore({
+    FETCH: {
+      fetchStatus: `Done`,
+      formFetchStatus: `Done`
+    }
+  });
 
   render(
-      <redux.Provider store={mockStore({})}>
+      <redux.Provider store={store}>
         <Router history={history}>
           <ReviewForm id={`1`} />
         </Router>

@@ -223,11 +223,21 @@ describe(`Async operation work correctly`, () => {
 
     return sendReview(dispatch, () => { }, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(3);
 
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.LOAD_REVIEWS,
           payload: mockReviews
+        });
+
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.CHANGE_FORM_FETCH_STATUS,
+          payload: FetchStatus.DONE
+        });
+
+        expect(dispatch).toHaveBeenNthCalledWith(3, {
+          type: ActionType.CHANGE_FORM_FETCH_STATUS,
+          payload: FetchStatus.PENDING
         });
       });
   });
@@ -243,7 +253,12 @@ describe(`Async operation work correctly`, () => {
 
     return sendReview(dispatch, () => { }, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(0);
+        expect(dispatch).toHaveBeenCalledTimes(3);
+
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.CHANGE_FORM_FETCH_STATUS,
+          payload: FetchStatus.ERROR
+        });
       });
   });
   it(`Should make a correct API post call to /favorite/:id/:status`, () => {
@@ -255,11 +270,16 @@ describe(`Async operation work correctly`, () => {
 
     apiMock
       .onPost(`${APIRoutes.FAVORITE}/${offerId}/${status}`)
-      .reply(200);
+      .reply(200, mockOffers[0]);
 
     return sendFavorite(dispatch, () => { }, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(0);
+        expect(dispatch).toHaveBeenCalledTimes(1);
+
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.UPDATE_OFFERS,
+          payload: mockOffers[0]
+        });
       });
   });
 });

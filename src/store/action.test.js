@@ -2,6 +2,7 @@ import {
   ActionType,
   changeCity,
   changeSort,
+  loadFavoriteOffers,
   loadOffers,
   loadNearby,
   loadOffer,
@@ -11,7 +12,8 @@ import {
   setActiveOffer,
   changeFetchStatus,
   clearOffer,
-  updateOffers
+  updateOffers,
+  changeFormFetchStatus
 } from './action';
 
 /* eslint-disable */
@@ -62,6 +64,13 @@ describe(`Action creators work correctly`, () => {
     };
     expect(setUserInfo(mockUserInfo)).toEqual(expectedAction);
   });
+  it(`Action creator for favorite offers load returns correct action`, () => {
+    const expectedAction = {
+      type: ActionType.LOAD_FAVORITE_OFFERS,
+      payload: mockOffers
+    };
+    expect(loadFavoriteOffers(mockOffers)).toEqual(expectedAction);
+  });
   it(`Action creator for offers load returns correct action`, () => {
     const expectedAction = {
       type: ActionType.LOAD_OFFERS,
@@ -104,6 +113,13 @@ describe(`Action creators work correctly`, () => {
     };
     expect(changeFetchStatus(`Pending`)).toEqual(expectedAction);
   });
+  it(`Action creator for changing form fetch status returns correct action`, () => {
+    const expectedAction = {
+      type: ActionType.CHANGE_FORM_FETCH_STATUS,
+      payload: `Pending`
+    };
+    expect(changeFormFetchStatus(`Pending`)).toEqual(expectedAction);
+  });
   it(`Action creator for offer clear returns correct action`, () => {
     const expectedAction = {
       type: ActionType.CLEAR_OFFER
@@ -113,8 +129,8 @@ describe(`Action creators work correctly`, () => {
   it(`Action creator for offers update returns correct action`, () => {
     const expectedAction = {
       type: ActionType.UPDATE_OFFERS,
-      payload: mockOffers
+      payload: mockOffers[0]
     };
-    expect(updateOffers(mockOffers)).toEqual(expectedAction);
+    expect(updateOffers(mockOffers[0])).toEqual(expectedAction);
   });
 });

@@ -1,6 +1,22 @@
-import {setUserInfo, requireAuthorization, loadOffers, loadOffer, loadNearby, loadReviews, changeFetchStatus} from "./action";
-import {AuthorizationStatus, APIRoutes, AppRoutes, FetchStatus} from "../const";
-import browserHistory from "../browser-history";
+import {
+  setUserInfo,
+  requireAuthorization,
+  loadFavoriteOffers,
+  loadOffers,
+  loadOffer,
+  loadNearby,
+  loadReviews,
+  changeFetchStatus,
+  updateOffers,
+  changeFormFetchStatus
+} from './action';
+import {
+  AuthorizationStatus,
+  APIRoutes,
+  AppRoutes,
+  FetchStatus
+} from '../const';
+import browserHistory from '../browser-history';
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoutes.LOGIN)
@@ -15,6 +31,13 @@ export const login = ({login: email, password}) => (dispatch, _getState, api) =>
     .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
     .then(() => browserHistory.push(AppRoutes.ROOT))
     .catch(() => {})
+);
+
+export const fetchFavoriteOffersList = () => (dispatch, _getState, api) => (
+  api.get(APIRoutes.FAVORITE)
+    .then(({data}) => dispatch(loadFavoriteOffers(data)))
+    .then(() => dispatch(changeFetchStatus(FetchStatus.DONE)))
+    .catch(() => dispatch(changeFetchStatus(FetchStatus.ERROR)))
 );
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
@@ -45,10 +68,19 @@ export const fetchOfferReviews = (id) => (dispatch, _getState, api) => (
 export const sendOfferReview = (id, {review: comment, rating}) => (dispatch, _state, api) => (
   api.post(`${APIRoutes.REVIEWS}/${id}`, {comment, rating})
     .then(({data}) => dispatch(loadReviews(data)))
-    .catch(() => {})
+    .then(() => {
+      dispatch(changeFormFetchStatus(FetchStatus.DONE));
+      dispatch(changeFormFetchStatus(FetchStatus.PENDING));
+    })
+    .catch(() => {
+      dispatch(changeFormFetchStatus(FetchStatus.ERROR));
+      dispatch(changeFormFetchStatus(FetchStatus.DONE));
+      dispatch(changeFormFetchStatus(FetchStatus.PENDING));
+    })
 );
 
-export const sendFavoriteStatus = (id, status) => (_dispatch, _state, api) => (
+export const sendFavoriteStatus = (id, status) => (dispatch, _state, api) => (
   api.post(`${APIRoutes.FAVORITE}/${id}/${status}`)
+    .then(({data}) => dispatch(updateOffers(data)))
     .catch(() => {})
 );

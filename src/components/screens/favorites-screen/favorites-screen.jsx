@@ -1,13 +1,29 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchFavoriteOffersList} from '../../../store/api-actions';
+import {getCurrentFavoriteOffers} from '../../../store/offers-data/selectors';
+
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import FavoritesList from '../../favorites-list/favorites-list';
 import FavoritesEmpty from '../../favorites-empty/favorites-empty';
-import {getFavoriteOffers} from '../../../store/offers-data/selectors';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 const FavoritesScreen = () => {
-  const offers = useSelector(getFavoriteOffers);
+  const dispatch = useDispatch();
+  const {offers, isOffersLoaded} = useSelector(getCurrentFavoriteOffers);
+
+  useEffect(() => {
+    if (!isOffersLoaded) {
+      dispatch(fetchFavoriteOffersList());
+    }
+  }, [isOffersLoaded]);
+
+  if (!isOffersLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <div className="page">

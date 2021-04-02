@@ -10,7 +10,7 @@ import {offersListPropTypes} from '../../prop-types.prop';
 const FavoritesList = ({offers}) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const offersByCity = groupByKey(offers, `city.name`);
+  const offersByCity = groupByKey(offers);
 
   const handleCityClick = (evt) => {
     evt.preventDefault();

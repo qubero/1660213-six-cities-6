@@ -1,7 +1,9 @@
-import React, {Fragment, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {Fragment, useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {sendOfferReview} from '../../store/api-actions';
+import {getFormFetchStatus} from '../../store/fetch-process/selectors';
+import {FetchStatus} from '../../const';
 
 const starsTitles = [
   `terribly`,
@@ -11,6 +13,11 @@ const starsTitles = [
   `perfect`
 ];
 
+const ReviewLimit = {
+  MIN_CHARS: 50,
+  MAX_CHARS: 300
+};
+
 const formStub = {
   rating: 0,
   review: ``,
@@ -19,13 +26,37 @@ const formStub = {
 const ReviewForm = ({id: currentId}) => {
   const dispatch = useDispatch();
 
+  const fetchStatus = useSelector(getFormFetchStatus);
+  const [disabled, setDisabled] = useState(true);
+  const [formDisabled, setFormDisabled] = useState(false);
   const [userForm, setUserForm] = useState(formStub);
   const {rating, review} = userForm;
 
+  useEffect(() => {
+    setDisabled(!rating
+      || review.length < ReviewLimit.MIN_CHARS
+      || review.length > ReviewLimit.MAX_CHARS
+    );
+  }, [userForm]);
+
+  useEffect(() => {
+    switch (fetchStatus) {
+      case FetchStatus.ERROR:
+        // eslint-disable-next-line
+        alert(`Sumbit review failed`);
+        setFormDisabled(false);
+        break;
+      case FetchStatus.DONE:
+        setUserForm(formStub);
+        setFormDisabled(false);
+        break;
+    }
+  }, [fetchStatus]);
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    setFormDisabled(true);
     dispatch(sendOfferReview(currentId, userForm));
-    setUserForm(formStub);
   };
 
   const handleFieldChange = (evt) => {
@@ -39,6 +70,7 @@ const ReviewForm = ({id: currentId}) => {
       action="#"
       method="post"
       onSubmit={handleSubmit}
+      disabled={formDisabled}
     >
       <label
         className="reviews__label form__label"
@@ -63,6 +95,7 @@ const ReviewForm = ({id: currentId}) => {
                 value={id}
                 checked={id === rating}
                 onChange={handleFieldChange}
+                disabled={formDisabled}
                 data-testid={`${id}-stars`}
               />
               <label
@@ -86,6 +119,9 @@ const ReviewForm = ({id: currentId}) => {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={review}
         onChange={handleFieldChange}
+        minLength={ReviewLimit.MIN_CHARS}
+        maxLength={ReviewLimit.MAX_CHARS}
+        disabled={formDisabled}
         data-testid="review"
       />
 
@@ -96,7 +132,7 @@ const ReviewForm = ({id: currentId}) => {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled=""
+          disabled={formDisabled || disabled}
           data-testid="review-submit"
         >Submit</button>
       </div>

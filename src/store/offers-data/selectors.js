@@ -5,6 +5,15 @@ import {getActiveCity, getActiveSort} from '../main-data/selectors';
 
 export const getOffers = (state) => state[NameSpace.OFFERS].offers;
 export const getIsOffersLoaded = (state) => state[NameSpace.OFFERS].isOffersLoaded;
+export const getFavoriteOffers = (state) => state[NameSpace.OFFERS].favoriteOffers;
+export const getIsFavoriteOffersLoaded = (state) => state[NameSpace.OFFERS].isFavoriteOffersLoaded;
+
+export const getCurrentFavoriteOffers = createSelector(
+    [getFavoriteOffers, getIsFavoriteOffersLoaded],
+    (offers, isOffersLoaded) => {
+      return {offers, isOffersLoaded};
+    }
+);
 
 export const getCurrentOffers = createSelector(
     [getOffers, getIsOffersLoaded, getActiveCity, getActiveSort],
@@ -15,9 +24,4 @@ export const getCurrentOffers = createSelector(
 
       return {offers, isOffersLoaded};
     }
-);
-
-export const getFavoriteOffers = createSelector(
-    [getOffers],
-    (offers) => offers.filter((offer) => offer.isFavorite)
 );

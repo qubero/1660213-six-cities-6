@@ -30,7 +30,11 @@ it(`Render 'ReviewsList'`, () => {
   const history = createMemoryHistory();
   const store = mockStore({
     USER: {authorizationStatus: AuthorizationStatus.AUTH},
-    OFFER: {reviews: mockReviews}
+    OFFER: {reviews: mockReviews},
+    FETCH: {
+      fetchStatus: `Done`,
+      formFetchStatus: `Done`
+    }
   });
 
   render(
