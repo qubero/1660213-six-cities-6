@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
+import {getIsAuth} from '../../store/user/selectors';
+import {getReviews} from '../../store/offer-data/selectors';
 import ReviewCard from '../review-card/review-card';
 import ReviewForm from '../review-form/review-form';
-import {AuthorizationStatus} from '../../const';
 
 const ReviewsList = ({id}) => {
-  const isAuth = useSelector(({USER}) =>
-    USER.authorizationStatus === AuthorizationStatus.AUTH
-  );
-  const reviews = useSelector(({OFFER}) => OFFER.reviews);
+  const isAuth = useSelector(getIsAuth);
+  const reviews = useSelector(getReviews);
 
   return (
     <section className="property__reviews reviews">

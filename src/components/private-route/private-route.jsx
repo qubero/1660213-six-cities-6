@@ -1,15 +1,16 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {Route, Redirect} from 'react-router-dom';
-import {AuthorizationStatus, AppRoutes} from '../../const';
+import {AppRoutes} from '../../const';
 import {privateRoutePropTypes} from '../../prop-types.prop';
+import {getIsAuth} from '../../store/user/selectors';
 
 const PrivateRoute = ({children, ...props}) => {
-  const {authorizationStatus} = useSelector((state) => state.USER);
+  const isAuth = useSelector(getIsAuth);
 
   return (
     <Route {...props}>
-      {authorizationStatus === AuthorizationStatus.AUTH
+      {isAuth
         ? children
         : <Redirect to={AppRoutes.LOGIN} />}
     </Route>

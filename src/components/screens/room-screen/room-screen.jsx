@@ -12,6 +12,11 @@ import {
   getRatingPercentage,
   getFirstLetterUppercase
 } from '../../../utils/utils';
+import {
+  getOffer,
+  getNearby
+} from '../../../store/offer-data/selectors';
+import {getFetchStatus} from '../../../store/fetch-process/selectors';
 import {FetchStatus} from '../../../const';
 
 import Header from '../../header/header';
@@ -29,9 +34,9 @@ const RoomScreen = () => {
   const {id} = useParams();
   const dispatch = useDispatch();
 
-  const offer = useSelector(({OFFER}) => OFFER.offer);
-  const nearby = useSelector(({OFFER}) => OFFER.nearby);
-  const fetchStatus = useSelector(({OFFER}) => OFFER.fetchStatus);
+  const offer = useSelector(getOffer);
+  const nearby = useSelector(getNearby);
+  const fetchStatus = useSelector(getFetchStatus);
 
   useEffect(() => {
     dispatch(fetchOffer(id));

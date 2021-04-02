@@ -1,11 +1,12 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {AuthorizationStatus, AppRoutes} from '../../const';
+import {AppRoutes} from '../../const';
+import {getIsAuth, getUserInfo} from '../../store/user/selectors';
 
 const Header = () => {
-  const {authorizationStatus, userInfo} = useSelector((state) => state.USER);
-  const isAuth = authorizationStatus === AuthorizationStatus.AUTH;
+  const userInfo = useSelector(getUserInfo);
+  const isAuth = useSelector(getIsAuth);
 
   return (
     <header className="header" data-testid="header">
